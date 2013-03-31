@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
 import verwatch.core
 import verwatch.conf
+import verwatch.fetch
 
 def help(paths):
     return """
@@ -12,17 +13,30 @@ Arguments:
   PACKAGE_REGEX   Regular expression to select packages.
 
 Options:
-  -p CONF --package-conf=CONF   Use package configuration file CONF. (default: %s)
-  -u --update                   Update package version cache before listing version.
-  -U --update-only              Update package version cache and exit.
-  --version                     Print verwatch version and exit.
-  -h --help                     Print this help and exit.
+  -p CONF --package-conf=CONF    Use package configuration file CONF. (default: "%(pkgconf)s")
+                                 Maps to: %(pkgconf_fn)s
+  -u --update                    Update package version cache before listing version.
+  -U --update-only               Update package version cache and exit.
+  --version                      Print verwatch version and exit.
+  -h --help                      Print this help and exit.
 
 Paths:
-  verwatch base:
-  Package configs:
-  Cache:
-""" % verwatch.conf.DEFAULT_PKGCONF
+  verwatch base      %(base_dir)s
+  package configs    %(pkgconf_dir)s
+  plugins            %(plugins_dir)s
+  cache              %(cache_dir)s
+
+Available version fetchers:
+  %(fetchers)s
+""" % {
+          'pkgconf': verwatch.conf.DEFAULT_PKGCONF,
+          'pkgconf_fn': paths.get_package_conf_fn('CONF'),
+          'base_dir': paths.base_dir,
+          'pkgconf_dir': paths.pkgconf_dir,
+          'plugins_dir': paths.plugins_dir,
+          'cache_dir': paths.cache_dir,
+          'fetchers': "\n  ".join(sorted(verwatch.fetch.VersionFetcher.fetchers.keys()))
+      }
 
 from docopt import docopt
 
