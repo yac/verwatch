@@ -1,0 +1,23 @@
+{
+    "repos": {
+        "fedora packages": {
+            "fetcher": "koji"
+        }
+    },
+    "packages": [
+        {
+            "name": "python-novaclient",
+            "releases": [
+                {
+                    "name": "latest",
+                    "repos": [
+                        {
+                            "repo": "fedora packages",
+                            "branches": [ "f17", "f18", "f19", "dist-E6-epel" ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

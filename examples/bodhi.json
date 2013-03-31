@@ -1,0 +1,23 @@
+{
+    "repos": {
+        "fedora updates": { 
+            "fetcher": "bodhi"
+        }
+    },
+    "packages": [
+        {
+            "name": "python-novaclient",
+            "releases": [
+                {
+                    "name": "folsom",
+                    "repos": [
+                        {
+                            "repo": "fedora updates",
+                            "branches": [ "f18-updates", "dist-6E-epel" ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

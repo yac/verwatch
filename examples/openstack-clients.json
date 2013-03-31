@@ -1,0 +1,102 @@
+{
+    "repos": {
+        "redhat-openstack": {
+            "fetcher": "git",
+            "options": {
+                "repo_base": "https://github.com/redhat-openstack/"
+            }
+        },
+        "openstack": {
+            "fetcher": "git",
+            "options": {
+                "repo_base": "https://github.com/openstack/"
+            }
+        },
+        "fedora packages": { 
+            "fetcher": "fedora"
+        }
+    },
+    "packages": [
+        {
+            "name": "python-novaclient",
+            "releases": [
+                {
+                    "name": "folsom",
+                    "repos": [
+                        {
+                            "repo": "redhat-openstack",
+                            "branches": [ "stable/folsom" ]
+                        },
+                        {
+                            "repo": "fedora packages",
+                            "branches": [ "f18-updates", "dist-6E-epel" ]
+                        }
+                    ]
+                },
+                {
+                    "name": "upstream",
+                    "repos": [
+                        {
+                            "repo": "openstack",
+                            "branches": [ "master" ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "python-glanceclient",
+            "releases": [
+                {
+                    "name": "folsom",
+                    "repos": [
+                        {
+                            "repo": "redhat-openstack",
+                            "branches": [ "stable/folsom" ]
+                        },
+                        {
+                            "repo": "fedora packages",
+                            "branches": [ "f18-updates", "dist-6E-epel" ]
+                        }
+                    ]
+                },
+                {
+                    "name": "upstream",
+                    "repos": [
+                        {
+                            "repo": "openstack",
+                            "branches": [ "master" ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "python-ceilometerclient",
+            "releases": [
+                {
+                    "name": "folsom",
+                    "repos": [
+                        {
+                            "repo": "redhat-openstack",
+                            "branches": [ "stable/folsom" ]
+                        },
+                        {
+                            "repo": "fedora packages",
+                            "branches": [ "f18-updates", "dist-6E-epel" ]
+                        }
+                    ]
+                },
+                {
+                    "name": "upstream",
+                    "repos": [
+                        {
+                            "repo": "openstack",
+                            "branches": [ "master" ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
