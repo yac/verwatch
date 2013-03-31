@@ -55,6 +55,18 @@ See `examples` folder for sample package configurations.
 `examples/README.md` explains where to put them and how to use them.
 
 
+USAGE
+-----
+
+There is `verw` CLI frontend. Some use cases:
+
+ * `verw` :  lists versions for default packages.
+ * `verw -u` :  updates and shows versions for default packages.
+ * `verw -p clients` :  use `~/.verwatch/packages/clients.json` package config.
+ * `verw 'nova|cinder'` :  show versions for packages matching supplied regex.
+
+For library usage, see `shell.py`.
+
 MAKE YOUR OWN VERSION FETCHER - EASY AS PIE!
 --------------------------------------------
 
