@@ -27,11 +27,18 @@ class GitFetcher(VersionFetcher):
         repo_dir = "%s/%s" % (self.repo_base_dir, pkg_name)
         if os.path.isdir(repo_dir):
             os.chdir(repo_dir)
-            errc, out, err = run('git pull')
+            errc, out, err = run('git fetch --all')
+            if errc:
+                return {'error': 'git fetch failed: %s' % (err or out)}
         else:
-            self._clone_repo(pkg_name)
+            try:
+                self._clone_repo(pkg_name)
+            except RuntimeError, e:
+                return {'error': e.args[0]}
             os.chdir(repo_dir)
-        errc, out, err = run('git log --tags --simplify-by-decoration --pretty="format:%d"')
+        errc, out, err = run('git log --tags --simplify-by-decoration --pretty="format:%%d" origin/%s' % branch)
+        if errc:
+            return {'error': 'git log failed: %s' % (err or out)}
         # dark parsing magic, move along
         tags = out.rstrip().split('\n')
         tags = map(lambda s: re.split(', ', s.lstrip(' (').rstrip(') ')), tags)

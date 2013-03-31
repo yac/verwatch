@@ -37,7 +37,7 @@ class FetcherManager(object):
 
 
 class UberPrinter(object):
-    def __init__(self, prefix='', indent_cols=2):
+    def __init__(self, prefix='', indent_cols=4):
         self.prefix = prefix
         self.indent_cols = indent_cols
         self.indent = 0
@@ -100,47 +100,76 @@ def cached_versions(ver_cache_fn):
     return json.load(open(ver_cache_fn, 'rb'))
 
 
+def is_same_version(ver1, ver2):
+    def _same_attr(h1, h2, attr):
+        if attr in h1:
+            if attr not in h2:
+                return False
+            return h1[attr] == h2[attr]
+        else:
+            return attr not in h2
+    return _same_attr(ver1, ver2, 'version') and \
+           _same_attr(ver1, ver2, 'release') and \
+           _same_attr(ver1, ver2, 'epoch')
+
+
 def render_version(ver, max_ver=None):
     s = ''
     if 'version' in ver:
+        if 'epoch' in ver:
+            e = ver['epoch']
+            s += T.cyan(e) + T.bold_black(':')
         v = ver['version']
         if max_ver and v == max_ver:
-            s = T.green(v)
+            s += T.green(v)
         else:
-            s = T.yellow(v)
+            s += T.yellow(v)
         if 'release' in ver:
             r = ver['release']
             s += T.bold_black('-') + T.cyan(r)
     else:
         s = T.red('!!')
     if 'next' in ver:
-        s += ' -> ' + render_version(ver['next'], max_ver)
+        next_ver = ver['next']
+        if not is_same_version(ver, next_ver):
+            s += ' -> ' + render_version(next_ver, max_ver)
     return s
 
 
-def print_versions(pkg_conf, vers=None, rex_filter=None):
-    if not vers:
-        vers = cached_versions()
+def release_latest_version(rls, vers, pkg_name):
+    max_verl = [0, 0, 0]
+    for repo in rls['repos']:
+        for branch in repo['branches']:
+            try:
+                ver = vers[pkg_name][repo['repo']][branch]
+                while 'version' in ver:
+                    v = ver['version']
+                    verl = verwatch.util.ver2list(v)
+                    max_verl = max(verl, max_verl)
+                    if 'next_version' in ver:
+                        ver = ver['next_version']
+                    else:
+                        ver = {}
+            except KeyError:
+                continue
+    return '.'.join(map(str, max_verl))
+
+
+def print_versions(pkg_conf, vers, rex_filter=None):
     pp = UberPrinter()
+    first = True
     for pkg in pkg_conf['packages']:
         pkg_name = pkg['name']
         if rex_filter and not re.search(rex_filter, pkg_name):
             continue
-        pp.puts(T.bold("= %s =" % pkg_name), shift=1)
+        if first:
+            first = False
+        else:
+            pp.puts("")
+        pp.puts(T.bold("%s" % pkg_name), shift=1)
         for rls in pkg['releases']:
-            pp.puts(T.bold(rls['name']), shift=1)
-            # find latest version
-            max_verl = [0, 0, 0]
-            for repo in rls['repos']:
-                for branch in repo['branches']:
-                    try:
-                        ver = vers[pkg_name][repo['repo']][branch]
-                        v = ver['version']
-                    except KeyError:
-                        continue
-                    verl = verwatch.util.ver2list(v)
-                    max_verl = max(verl, max_verl)
-            max_ver = '.'.join(map(str, max_verl))
+            pp.puts("[%s]" % T.bold(rls['name']), shift=1)
+            max_ver = release_latest_version(rls, vers, pkg_name)
             # print all release versions
             for repo in rls['repos']:
                 repo_name = repo['repo']

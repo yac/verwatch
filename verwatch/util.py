@@ -7,12 +7,24 @@ def is_version(ver):
     return re.match('v?[0-9]', ver) is not None
 
 
-def vr(nvr, name):
+def parse_nvr(nvr, name):
     if nvr.startswith(name):
         vr = nvr[len(name)+1:]
         # TODO: might contain more than one '-'
-        return vr.split('-')
-    return nvr, ''
+        ri = vr.rfind('-')
+        if ri < 0:
+            return {'version': vr}
+        ver = {}
+        v = vr[0:ri]
+        ver['release'] = vr[ri+1:]
+        ei = v.find(':')
+        if ei >= 0:
+            ver['epoch'] = v[0:ei]
+            ver['version'] = v[ei+1:]
+        else:
+            ver['version'] = v
+        return ver
+    return {'error': 'Unable to parse version: %s' % nvr}
 
 
 def ver2list(ver):
@@ -31,7 +43,7 @@ def run(cmd):
                            stderr=subprocess.PIPE)
     out, err = prc.communicate()
     errcode = prc.returncode
-    return (errcode, out, err)
+    return (errcode, out.rstrip(), err.rstrip())
 
 
 def mkdir_file(file_path):

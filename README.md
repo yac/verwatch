@@ -13,9 +13,11 @@ This software is being created at the moment, help me hack it!
 WHAT CAN IT DO
 --------------
 
- * fetch versions from:
-    * git repo tags
-    * Fedora updates using `bodhi`
+ * fetch versions:
+    * `git` (latest version tag)
+    * `repoquery` (query rpm repos)
+    * `bodhi` (Fedora updates)
+    * `koji` (Fedora build system)
  * save versions locally and query them offline
  * use pretty colors to mark latest/old versions
  * tree version structure: package -> release -> repo -> branch
@@ -27,10 +29,9 @@ WHAT CAN IT DO
 WHAT IS PLANNED
 ---------------
 
- * m0ar fetchers:
-    * `repoquery`
-    * `$WHATEVER_IS_NEEDED`
  * HTML output (just a matter of transfroming JSON)
+ * automatic fetch on old cache
+ * tests?
 
 
 REQUIREMENTS
