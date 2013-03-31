@@ -6,6 +6,7 @@ import verwatch.builtin_fetchers
 import verwatch.fetch
 
 import os
+import re
 import json
 import blessings
 
@@ -123,6 +124,8 @@ def print_versions(pkg_conf, vers=None, rex_filter=None):
     pp = UberPrinter()
     for pkg in pkg_conf['packages']:
         pkg_name = pkg['name']
+        if rex_filter and not re.search(rex_filter, pkg_name):
+            continue
         pp.puts(T.bold("= %s =" % pkg_name), shift=1)
         for rls in pkg['releases']:
             pp.puts(T.bold(rls['name']), shift=1)

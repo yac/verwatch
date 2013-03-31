@@ -20,6 +20,7 @@ WHAT CAN IT DO
  * use pretty colors to mark latest/old versions
  * tree version structure: package -> release -> repo -> branch
  * supports multiple package configurations
+ * filter shown packages using regexp
  * easily write and plug custom version fetchers
 
 
@@ -29,7 +30,6 @@ WHAT IS PLANNED
  * m0ar fetchers:
     * `repoquery`
     * `$WHATEVER_IS_NEEDED`
- * filter shown packages using regexp
  * HTML output (just a matter of transfroming JSON)
 
 

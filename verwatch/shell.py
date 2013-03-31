@@ -71,7 +71,7 @@ def main():
             print("Can't read cache file, fetching...")
             vers = verwatch.core.update_versions(pkg_conf, paths, ver_cache_fn)
 
-    verwatch.core.print_versions(pkg_conf, vers)
+    verwatch.core.print_versions(pkg_conf, vers, args['PACKAGE_REGEX'])
     
 
 
