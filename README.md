@@ -31,6 +31,7 @@ WHAT IS PLANNED
 
  * HTML output (just a matter of transfroming JSON)
  * automatic fetch on old cache
+ * documentation
  * tests?
 
 
@@ -43,3 +44,20 @@ Following `python` packages are required:
  * `blessings` for funky colors
 
 I hacked it up on python 2.7.
+
+
+MAKE YOUR OWN VERSION FETCHER - EASY AS PIE!
+--------------------------------------------
+
+Long story short:
+
+ 1. Copy a builtin fetcher of your choice from `verwatch/fetchers` to `~/.verwatch/plugins`.
+ 2. Modify to your needs.
+ 3. ???
+ 4. **Profit!**
+
+`~/.verwatch/plugins/*.py` are loaded automatically and any subclasses of
+`verwatch.fetch.VersionFetcher` are registered as version fetchers.
+
+To use your shiny new fetcher, just reference it in package configuration by
+its `name`.
