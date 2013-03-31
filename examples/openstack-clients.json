@@ -12,8 +12,17 @@
                 "repo_base": "https://github.com/openstack/"
             }
         },
-        "fedora packages": { 
-            "fetcher": "fedora"
+        "grizzly side repo": {
+            "fetcher": "repoquery",
+            "options": {
+                "repo_base": "http://repos.fedorapeople.org/repos/openstack/openstack-grizzly/"
+            }
+        },
+        "Fedora updates": { 
+            "fetcher": "bodhi"
+        },
+        "Fedora builds": { 
+            "fetcher": "koji"
         }
     },
     "packages": [
@@ -28,8 +37,29 @@
                             "branches": [ "stable/folsom" ]
                         },
                         {
-                            "repo": "fedora packages",
+                            "repo": "Fedora updates",
                             "branches": [ "f18-updates", "dist-6E-epel" ]
+                        },
+                        {
+                            "repo": "Fedora builds",
+                            "branches": [ "f18", "dist-6E-epel" ]
+                        }
+                    ]
+                },
+                {
+                    "name": "grizzly",
+                    "repos": [
+                        {
+                            "repo": "redhat-openstack",
+                            "branches": [ "stable/grizzly" ]
+                        },
+                        {
+                            "repo": "grizzly side repo",
+                            "branches": [ "fedora-17", "fedora-18", "epel-6" ]
+                        },
+                        {
+                            "repo": "Fedora builds",
+                            "branches": [ "f19" ]
                         }
                     ]
                 },
@@ -55,8 +85,213 @@
                             "branches": [ "stable/folsom" ]
                         },
                         {
-                            "repo": "fedora packages",
+                            "repo": "Fedora updates",
                             "branches": [ "f18-updates", "dist-6E-epel" ]
+                        },
+                        {
+                            "repo": "Fedora builds",
+                            "branches": [ "f18", "dist-6E-epel" ]
+                        }
+                    ]
+                },
+                {
+                    "name": "grizzly",
+                    "repos": [
+                        {
+                            "repo": "redhat-openstack",
+                            "branches": [ "stable/grizzly" ]
+                        },
+                        {
+                            "repo": "grizzly side repo",
+                            "branches": [ "fedora-17", "fedora-18", "epel-6" ]
+                        },
+                        {
+                            "repo": "Fedora builds",
+                            "branches": [ "f19" ]
+                        }
+                    ]
+                },
+                {
+                    "name": "upstream",
+                    "repos": [
+                        {
+                            "repo": "openstack",
+                            "branches": [ "master" ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "python-keystoneclient",
+            "releases": [
+                {
+                    "name": "folsom",
+                    "repos": [
+                        {
+                            "repo": "redhat-openstack",
+                            "branches": [ "stable/folsom" ]
+                        },
+                        {
+                            "repo": "Fedora updates",
+                            "branches": [ "f18-updates", "dist-6E-epel" ]
+                        },
+                        {
+                            "repo": "Fedora builds",
+                            "branches": [ "f18", "dist-6E-epel" ]
+                        }
+                    ]
+                },
+                {
+                    "name": "grizzly",
+                    "repos": [
+                        {
+                            "repo": "redhat-openstack",
+                            "branches": [ "stable/grizzly" ]
+                        },
+                        {
+                            "repo": "grizzly side repo",
+                            "branches": [ "fedora-17", "fedora-18", "epel-6" ]
+                        },
+                        {
+                            "repo": "Fedora builds",
+                            "branches": [ "f19" ]
+                        }
+                    ]
+                },
+                {
+                    "name": "upstream",
+                    "repos": [
+                        {
+                            "repo": "openstack",
+                            "branches": [ "master" ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "python-cinderclient",
+            "releases": [
+                {
+                    "name": "folsom",
+                    "repos": [
+                        {
+                            "repo": "redhat-openstack",
+                            "branches": [ "stable/folsom" ]
+                        },
+                        {
+                            "repo": "Fedora updates",
+                            "branches": [ "f18-updates", "dist-6E-epel" ]
+                        },
+                        {
+                            "repo": "Fedora builds",
+                            "branches": [ "f18", "dist-6E-epel" ]
+                        }
+                    ]
+                },
+                {
+                    "name": "grizzly",
+                    "repos": [
+                        {
+                            "repo": "redhat-openstack",
+                            "branches": [ "stable/grizzly" ]
+                        },
+                        {
+                            "repo": "grizzly side repo",
+                            "branches": [ "fedora-17", "fedora-18", "epel-6" ]
+                        },
+                        {
+                            "repo": "Fedora builds",
+                            "branches": [ "f19" ]
+                        }
+                    ]
+                },
+                {
+                    "name": "upstream",
+                    "repos": [
+                        {
+                            "repo": "openstack",
+                            "branches": [ "master" ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "python-quantumclient",
+            "releases": [
+                {
+                    "name": "folsom",
+                    "repos": [
+                        {
+                            "repo": "redhat-openstack",
+                            "branches": [ "stable/folsom" ]
+                        },
+                        {
+                            "repo": "Fedora updates",
+                            "branches": [ "f18-updates", "dist-6E-epel" ]
+                        },
+                        {
+                            "repo": "Fedora builds",
+                            "branches": [ "f18", "dist-6E-epel" ]
+                        }
+                    ]
+                },
+                {
+                    "name": "grizzly",
+                    "repos": [
+                        {
+                            "repo": "redhat-openstack",
+                            "branches": [ "stable/grizzly" ]
+                        },
+                        {
+                            "repo": "grizzly side repo",
+                            "branches": [ "fedora-17", "fedora-18", "epel-6" ]
+                        },
+                        {
+                            "repo": "Fedora builds",
+                            "branches": [ "f19" ]
+                        }
+                    ]
+                },
+                {
+                    "name": "upstream",
+                    "repos": [
+                        {
+                            "repo": "openstack",
+                            "branches": [ "master" ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "python-swiftclient",
+            "releases": [
+                {
+                    "name": "folsom",
+                    "repos": [
+                        {
+                            "repo": "Fedora updates",
+                            "branches": [ "f18-updates", "dist-6E-epel" ]
+                        },
+                        {
+                            "repo": "Fedora builds",
+                            "branches": [ "f18", "dist-6E-epel" ]
+                        }
+                    ]
+                },
+                {
+                    "name": "grizzly",
+                    "repos": [
+                        {
+                            "repo": "grizzly side repo",
+                            "branches": [ "fedora-17", "fedora-18", "epel-6" ]
+                        },
+                        {
+                            "repo": "Fedora builds",
+                            "branches": [ "f19" ]
                         }
                     ]
                 },
@@ -75,15 +310,19 @@
             "name": "python-ceilometerclient",
             "releases": [
                 {
-                    "name": "folsom",
+                    "name": "grizzly",
                     "repos": [
                         {
                             "repo": "redhat-openstack",
-                            "branches": [ "stable/folsom" ]
+                            "branches": [ "stable/grizzly" ]
                         },
                         {
-                            "repo": "fedora packages",
-                            "branches": [ "f18-updates", "dist-6E-epel" ]
+                            "repo": "grizzly side repo",
+                            "branches": [ "fedora-17", "fedora-18", "epel-6" ]
+                        },
+                        {
+                            "repo": "Fedora builds",
+                            "branches": [ "f19" ]
                         }
                     ]
                 },

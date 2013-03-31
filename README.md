@@ -30,6 +30,7 @@ WHAT IS PLANNED
 ---------------
 
  * HTML output (just a matter of transfroming JSON)
+ * selective fetch (fetching can take a long time)
  * automatic fetch on old cache
  * documentation
  * tests?
@@ -44,6 +45,14 @@ Following `python` packages are required:
  * `blessings` for funky colors
 
 I hacked it up on python 2.7.
+
+
+CONFIGURATION
+-------------
+
+See `examples` folder for sample package configurations.
+
+`examples/README.md` explains where to put them and how to use them.
 
 
 MAKE YOUR OWN VERSION FETCHER - EASY AS PIE!
