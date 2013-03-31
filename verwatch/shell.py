@@ -29,6 +29,9 @@ from docopt import docopt
 
 def main():
     paths = verwatch.conf.PathsManager()
+    # import user plugins
+    verwatch.conf.import_files(paths.plugins_dir)
+
     args = docopt(help(paths), version=verwatch.core.VERSION, help=True)
 
     if args['--package-conf']:

@@ -1,5 +1,7 @@
 import os
 import json
+import glob
+import imp
 
 DEFAULT_PKGCONF = "default"
 
@@ -11,6 +13,7 @@ class PathsManager(object):
         else:
             self.base_dir = "%s/.verwatch" % os.environ['HOME']
         self.pkgconf_dir = "%s/packages" % self.base_dir
+        self.plugins_dir = "%s/plugins" % self.base_dir
         self.cache_dir = "%s/cache" % self.base_dir
         self.version_cache_dir = "%s/versions" % self.cache_dir
 
@@ -27,3 +30,22 @@ class PathsManager(object):
 
 def get_package_conf(conf_fn):
     return json.load(open(conf_fn))
+
+
+def import_file(fn):
+    (path, name) = os.path.split(fn)
+    (name, ext) = os.path.splitext(name)
+
+    (file, filename, data) = imp.find_module(name, [path])
+    return imp.load_module(name, file, filename, data)
+
+
+def import_files(path):
+    """
+    Import all *.py files in specified directory.
+    """
+    n = 0
+    for pyfile in glob.glob('%s/*.py' % path):
+        import_file(pyfile)
+        n += 1
+    return n

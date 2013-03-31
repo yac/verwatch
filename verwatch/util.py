@@ -38,15 +38,3 @@ def mkdir_file(file_path):
     dir_path = os.path.dirname(file_path)
     if not os.path.isdir(dir_path):
         os.makedirs(dir_path)
-
-
-class VersionFetcher(object):
-    """
-    Subclass this to create repo specific version fetcher.
-    """
-    def __init__(self, paths, options=None):
-        pass
-
-    def get_version(self, pkg_name, branch):
-        raise NotImplementedError
-

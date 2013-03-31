@@ -2,8 +2,8 @@
 
 import verwatch.conf
 import verwatch.util
-import verwatch.fetchers.fedora
-import verwatch.fetchers.git
+import verwatch.builtin_fetchers
+import verwatch.fetch
 
 import os
 import json
@@ -13,20 +13,15 @@ import blessings
 VERSION = '0.1'
 T = blessings.Terminal()
 
-class FetcherManager(object):
-    # temporary hack before creating allmighty plugin system
-    fetcher_classes = {
-        'fedora': verwatch.fetchers.fedora.FedoraFetcher,
-        'git': verwatch.fetchers.git.GitFetcher,
-    }
 
+class FetcherManager(object):
     def __init__(self, repo_conf, paths):
         self.fchs = {}
         for fch_name, fch in repo_conf.items():
             fch_cls = fch['fetcher']
-            if fch_cls not in self.fetcher_classes:
+            if fch_cls not in verwatch.fetch.VersionFetcher.fetchers:
                 raise NotImplementedError("Version fetcher '%s' is not available." % fch_cls)
-            fcls = self.fetcher_classes[fch_cls]
+            fcls = verwatch.fetch.VersionFetcher.fetchers[fch_cls]
             if 'options' in fch:
                 options = fch['options']
             else:

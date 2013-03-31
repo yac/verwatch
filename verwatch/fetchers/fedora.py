@@ -1,8 +1,11 @@
-from verwatch.util import VersionFetcher, run, vr
+from verwatch.fetch import VersionFetcher
+from verwatch.util import run, vr
 import re
 
 
 class FedoraFetcher(VersionFetcher):
+    name = 'fedora'
+
     def __init__(self, paths=None, options=None):
         self.cache = {}
 
