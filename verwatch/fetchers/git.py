@@ -12,7 +12,7 @@ class GitFetcher(VersionFetcher):
             raise ValueError("'repo_base' option not supplied to git fetcher.")
         self.paths = paths
         self.repo_base = options['repo_base']
-        self.repo_base_dir = "%s/%s" % (paths.cache_dir, options['id'])
+        self.repo_base_dir = "%s/git/%s" % (paths.cache_dir, options['id'])
         if not os.path.isdir(self.repo_base_dir):
             os.makedirs(self.repo_base_dir)
 
