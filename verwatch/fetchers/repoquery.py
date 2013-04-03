@@ -1,5 +1,5 @@
 from verwatch.fetch import VersionFetcher
-from verwatch.util import run, parse_nvr
+from verwatch.util import run, parse_nvr, safe_id
 
 
 class RepoqueryFetcher(VersionFetcher):
@@ -12,10 +12,12 @@ class RepoqueryFetcher(VersionFetcher):
         self.repo_base = options['repo_base']
 
     def get_version(self, pkg_name, branch):
-        errc, out, err = run("repoquery --repofrompath=_repo_,%(repo_base)s/%(branch)s/ --repoid=_repo_ -q %(pkg_name)s" % {
+        repoid = safe_id("verw_%s_%s_%s" % (self.repo_base[:10], self.repo_base[-10:], branch))
+        errc, out, err = run("repoquery --repofrompath=%(repoid)s,%(repo_base)s/%(branch)s/ --repoid=%(repoid)s -q %(pkg_name)s" % {
                              'repo_base': self.repo_base,
                              'branch': branch,
-                             'pkg_name': pkg_name})
+                             'pkg_name': pkg_name,
+                             'repoid': repoid})
         if errc:
             return {'error': err or out}
         if not out:

@@ -27,6 +27,10 @@ def parse_nvr(nvr, name):
     return {'error': 'Unable to parse version: %s' % nvr}
 
 
+def safe_id(s):
+    return re.sub('[^-a-zA-Z0-9]', '_', s)
+
+
 def ver2list(ver):
     def _int(s):
         try:
