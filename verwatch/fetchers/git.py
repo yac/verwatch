@@ -38,7 +38,12 @@ class GitFetcher(VersionFetcher):
             os.chdir(repo_dir)
         errc, out, err = run('git log --tags --simplify-by-decoration --pretty="format:%%d" origin/%s' % branch)
         if errc:
-            return {'error': 'git log failed: %s' % (err or out)}
+            err_msg = err or out
+            if err_msg.find("unknown revision") >= 0:
+                err_msg = "Branch '%s' doesn't seem to exist." % branch
+            else:
+                err_msg = 'git log failed: %s' % err_msg
+            return {'error': err_msg}
         # dark parsing magic, move along
         tags = out.rstrip().split('\n')
         tags = map(lambda s: re.split(', ', s.lstrip(' (').rstrip(') ')), tags)
