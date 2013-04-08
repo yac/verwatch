@@ -15,6 +15,7 @@ Arguments:
 Options:
   -p CONF --package-conf=CONF    Use package configuration file CONF. (default: "%(pkgconf)s")
                                  Maps to: %(pkgconf_fn)s
+  -r REGEX --release=REGEX       Only print releases matching regular expression REGEX.
   -u --update                    Update package version cache before listing version.
   -U --update-only               Update package version cache and exit.
   --version                      Print verwatch version and exit.
@@ -71,7 +72,7 @@ def main():
             print("Can't read cache file, fetching...")
             vers = verwatch.core.update_versions(pkg_conf, paths, ver_cache_fn)
 
-    verwatch.core.print_versions(pkg_conf, vers, args['PACKAGE_REGEX'])
+    verwatch.core.print_versions(pkg_conf, vers, args['PACKAGE_REGEX'], args['--release'])
     
 
 

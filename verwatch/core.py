@@ -159,19 +159,25 @@ def release_latest_version(rls, vers, pkg_name):
     return '.'.join(map(str, max_verl))
 
 
-def print_versions(pkg_conf, vers, rex_filter=None):
+def print_versions(pkg_conf, vers, package_filter=None, release_filter=None):
     pp = UberPrinter()
     first = True
-    for pkg in pkg_conf['packages']:
+    pkgs = pkg_conf['packages']
+    if package_filter:
+        pkgs = filter(lambda x: re.search(package_filter, x['name']), pkgs)
+    for pkg in pkgs:
+        rlss = pkg['releases']
+        if release_filter:
+            rlss = filter(lambda x: re.search(release_filter, x['name']), rlss)
+            if not rlss:
+                continue
         pkg_name = pkg['name']
-        if rex_filter and not re.search(rex_filter, pkg_name):
-            continue
         if first:
             first = False
         else:
             pp.puts("")
         pp.puts(T.bold("%s" % pkg_name), shift=1)
-        for rls in pkg['releases']:
+        for rls in rlss:
             pp.puts("[%s]" % T.bold(rls['name']), shift=1)
             max_ver = release_latest_version(rls, vers, pkg_name)
             # print all release versions
