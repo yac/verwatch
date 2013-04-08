@@ -75,10 +75,7 @@ def fetch_versions(pkg_conf, paths):
                     if branch not in repod:
                         ver = fm.fetch_version(repo_name, pkg_name, branch)
                         repod[branch] = ver
-                        if 'version' in ver:
-                            ver_str = ver['version']
-                        else:
-                            ver_str = ver
+                        ver_str = render_version(ver, show_error=True)
                         pp.puts("%s: %s" % (branch, ver_str))
 
                 pp.shift(-1)
@@ -113,7 +110,7 @@ def is_same_version(ver1, ver2):
            _same_attr(ver1, ver2, 'epoch')
 
 
-def render_version(ver, max_ver=None):
+def render_version(ver, max_ver=None, show_error=False):
     s = ''
     if 'version' in ver:
         if 'epoch' in ver:
@@ -128,7 +125,14 @@ def render_version(ver, max_ver=None):
             r = ver['release']
             s += T.bold_black('-') + T.cyan(r)
     else:
-        s = T.red('!!')
+        if show_error:
+            try:
+                err_msg = ver['error']
+            except KeyError:
+                err_msg = "BUG: No version fetched but fetcher didn't return error. Fetcher bug!"
+        else:
+            err_msg = '!!'
+        s = T.red(err_msg)
     if 'next' in ver:
         next_ver = ver['next']
         if not is_same_version(ver, next_ver):
