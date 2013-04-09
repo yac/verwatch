@@ -14,6 +14,8 @@ class BodhiFetcher(VersionFetcher):
             errc, out, err = run('bodhi -L %s' % pkg_name)
             if errc:
                 return {'error': err or out}
+            if not out:
+                return {'error': 'No version returned.'}
             pkg_vers = {}
             for line in out.rstrip().split('\n'):
                 line = line.strip()
