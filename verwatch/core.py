@@ -23,12 +23,11 @@ class FetcherManager(object):
             if fch_cls not in verwatch.fetch.VersionFetcher.fetchers:
                 raise NotImplementedError("Version fetcher '%s' is not available." % fch_cls)
             fcls = verwatch.fetch.VersionFetcher.fetchers[fch_cls]
-            if 'options' in fch:
-                options = fch['options']
-            else:
-                options = {}
+            options=fch.get('options', {})
             options['id'] = fch_name
-            self.fchs[fch_name] = fcls(paths, options)
+            self.fchs[fch_name] = fcls(paths=paths,
+                                       options=options,
+                                       alter_pkg_name=fch.get('alter_pkg_name'))
 
     def fetch_version(self, repo, pkg, branch):
         if repo not in self.fchs:

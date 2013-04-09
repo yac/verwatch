@@ -6,13 +6,19 @@ import hashlib
 class RepoqueryFetcher(VersionFetcher):
     name = 'repoquery'
 
-    def __init__(self, paths=None, options=None):
+    def __init__(self, **kwargs):
+        VersionFetcher.__init__(self, **kwargs)
+        if 'options' not in kwargs:
+            raise ValueError("options argument not supplied to repoquery fetcher. 'repo_base' option is required.")
+        if 'paths' not in kwargs:
+            raise ValueError("paths argument not supplied to repoquery fetcher.")
+        options = kwargs['options']
         if not options or 'repo_base' not in options:
             raise ValueError("'repo_base' option not supplied to repoquery fetcher.")
-        self.paths = paths
+        self.paths = kwargs['paths']
         self.repo_base = options['repo_base']
 
-    def get_version(self, pkg_name, branch):
+    def _get_version(self, pkg_name, branch):
         hsh = hashlib.md5()
         hsh.update(self.repo_base)
         hsh.update(branch)

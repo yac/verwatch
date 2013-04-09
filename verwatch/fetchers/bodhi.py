@@ -6,10 +6,11 @@ import re
 class BodhiFetcher(VersionFetcher):
     name = 'bodhi'
 
-    def __init__(self, paths=None, options=None):
+    def __init__(self, **kwargs):
+        VersionFetcher.__init__(self, **kwargs)
         self.cache = {}
 
-    def get_version(self, pkg_name, branch):
+    def _get_version(self, pkg_name, branch):
         if pkg_name not in self.cache:
             errc, out, err = run('bodhi -L %s' % pkg_name)
             if errc:
