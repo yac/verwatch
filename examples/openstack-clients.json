@@ -1,27 +1,32 @@
 {
     "repos": {
-        "redhat-openstack": {
-            "fetcher": "git",
-            "options": {
-                "repo_base": "https://github.com/redhat-openstack/"
-            }
-        },
         "openstack": {
+            "title": "openstack @ github.com",
             "fetcher": "git",
             "options": {
                 "repo_base": "https://github.com/openstack/"
             }
         },
-        "grizzly side repo": {
+        "redhat-openstack": {
+            "title": "redhat-openstack @ github.com",
+            "fetcher": "git",
+            "options": {
+                "repo_base": "https://github.com/redhat-openstack/"
+            }
+        },
+        "grizzly repo": {
+            "title": "grizzly side repo @ fedorapeople.org",
             "fetcher": "repoquery",
             "options": {
                 "repo_base": "http://repos.fedorapeople.org/repos/openstack/openstack-grizzly/"
             }
         },
-        "Fedora updates": { 
+        "bodhi": {
+            "title": "Fedora updates (bodhi)",
             "fetcher": "bodhi"
         },
-        "Fedora builds": { 
+        "koji": {
+            "title": "Fedora builds (koji)",
             "fetcher": "koji"
         }
     },
@@ -37,11 +42,11 @@
                             "branches": [ "stable/folsom" ]
                         },
                         {
-                            "repo": "Fedora updates",
+                            "repo": "bodhi",
                             "branches": [ "f18-updates", "dist-6E-epel" ]
                         },
                         {
-                            "repo": "Fedora builds",
+                            "repo": "koji",
                             "branches": [ "f18", "dist-6E-epel" ]
                         }
                     ]
@@ -54,12 +59,12 @@
                             "branches": [ "stable/grizzly" ]
                         },
                         {
-                            "repo": "grizzly side repo",
+                            "repo": "grizzly repo",
                             "branches": [ "fedora-18", "fedora-19", "epel-6" ]
                         },
                         {
-                            "repo": "Fedora builds",
-                            "branches": [ "f19" ]
+                            "repo": "koji",
+                            "branches": [ "f19", "f20" ]
                         }
                     ]
                 },
@@ -85,11 +90,11 @@
                             "branches": [ "stable/folsom" ]
                         },
                         {
-                            "repo": "Fedora updates",
+                            "repo": "bodhi",
                             "branches": [ "f18-updates", "dist-6E-epel" ]
                         },
                         {
-                            "repo": "Fedora builds",
+                            "repo": "koji",
                             "branches": [ "f18", "dist-6E-epel" ]
                         }
                     ]
@@ -102,12 +107,12 @@
                             "branches": [ "stable/grizzly" ]
                         },
                         {
-                            "repo": "grizzly side repo",
+                            "repo": "grizzly repo",
                             "branches": [ "fedora-18", "fedora-19", "epel-6" ]
                         },
                         {
-                            "repo": "Fedora builds",
-                            "branches": [ "f19" ]
+                            "repo": "koji",
+                            "branches": [ "f19", "f20" ]
                         }
                     ]
                 },
@@ -133,11 +138,11 @@
                             "branches": [ "stable/folsom" ]
                         },
                         {
-                            "repo": "Fedora updates",
+                            "repo": "bodhi",
                             "branches": [ "f18-updates", "dist-6E-epel" ]
                         },
                         {
-                            "repo": "Fedora builds",
+                            "repo": "koji",
                             "branches": [ "f18", "dist-6E-epel" ]
                         }
                     ]
@@ -150,12 +155,12 @@
                             "branches": [ "stable/grizzly" ]
                         },
                         {
-                            "repo": "grizzly side repo",
+                            "repo": "grizzly repo",
                             "branches": [ "fedora-18", "fedora-19", "epel-6" ]
                         },
                         {
-                            "repo": "Fedora builds",
-                            "branches": [ "f19" ]
+                            "repo": "koji",
+                            "branches": [ "f19", "f20" ]
                         }
                     ]
                 },
@@ -181,11 +186,11 @@
                             "branches": [ "stable/folsom" ]
                         },
                         {
-                            "repo": "Fedora updates",
+                            "repo": "bodhi",
                             "branches": [ "f18-updates", "dist-6E-epel" ]
                         },
                         {
-                            "repo": "Fedora builds",
+                            "repo": "koji",
                             "branches": [ "f18", "dist-6E-epel" ]
                         }
                     ]
@@ -198,12 +203,12 @@
                             "branches": [ "stable/grizzly" ]
                         },
                         {
-                            "repo": "grizzly side repo",
+                            "repo": "grizzly repo",
                             "branches": [ "fedora-18", "fedora-19", "epel-6" ]
                         },
                         {
-                            "repo": "Fedora builds",
-                            "branches": [ "f19" ]
+                            "repo": "koji",
+                            "branches": [ "f19", "f20" ]
                         }
                     ]
                 },
@@ -229,11 +234,11 @@
                             "branches": [ "stable/folsom" ]
                         },
                         {
-                            "repo": "Fedora updates",
+                            "repo": "bodhi",
                             "branches": [ "f18-updates", "dist-6E-epel" ]
                         },
                         {
-                            "repo": "Fedora builds",
+                            "repo": "koji",
                             "branches": [ "f18", "dist-6E-epel" ]
                         }
                     ]
@@ -246,12 +251,12 @@
                             "branches": [ "stable/grizzly" ]
                         },
                         {
-                            "repo": "grizzly side repo",
+                            "repo": "grizzly repo",
                             "branches": [ "fedora-18", "fedora-19", "epel-6" ]
                         },
                         {
-                            "repo": "Fedora builds",
-                            "branches": [ "f19" ]
+                            "repo": "koji",
+                            "branches": [ "f19", "f20" ]
                         }
                     ]
                 },
@@ -273,11 +278,11 @@
                     "name": "folsom",
                     "repos": [
                         {
-                            "repo": "Fedora updates",
+                            "repo": "bodhi",
                             "branches": [ "f18-updates", "dist-6E-epel" ]
                         },
                         {
-                            "repo": "Fedora builds",
+                            "repo": "koji",
                             "branches": [ "f18", "dist-6E-epel" ]
                         }
                     ]
@@ -286,12 +291,12 @@
                     "name": "grizzly",
                     "repos": [
                         {
-                            "repo": "grizzly side repo",
+                            "repo": "grizzly repo",
                             "branches": [ "fedora-18", "fedora-19", "epel-6" ]
                         },
                         {
-                            "repo": "Fedora builds",
-                            "branches": [ "f19" ]
+                            "repo": "koji",
+                            "branches": [ "f19", "f20" ]
                         }
                     ]
                 },
@@ -317,12 +322,12 @@
                             "branches": [ "stable/grizzly" ]
                         },
                         {
-                            "repo": "grizzly side repo",
+                            "repo": "grizzly repo",
                             "branches": [ "fedora-18", "fedora-19", "epel-6" ]
                         },
                         {
-                            "repo": "Fedora builds",
-                            "branches": [ "f19" ]
+                            "repo": "koji",
+                            "branches": [ "f19", "f20" ]
                         }
                     ]
                 },

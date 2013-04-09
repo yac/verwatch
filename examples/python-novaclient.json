@@ -55,7 +55,7 @@
                         },
                         {
                             "repo": "grizzly side repo",
-                            "branches": [ "fedora-17", "fedora-18", "epel-6" ]
+                            "branches": [ "fedora-18", "fedora-19", "epel-6" ]
                         },
                         {
                             "repo": "Fedora builds",
