@@ -66,7 +66,8 @@ def fetch_versions(pkg_conf, paths):
             pp.puts(rls['name'], shift=1)
             for repo in rls['repos']:
                 repo_name = repo['repo']
-                pp.puts(repo_name, shift=1)
+                repo_title = get_repo_title(pkg_conf, repo_name)
+                pp.puts(repo_title, shift=1)
                 if not repo_name in pkgd:
                     pkgd[repo_name] = {}
                 repod = pkgd[repo_name]
@@ -139,6 +140,10 @@ def render_version(ver, max_ver=None, show_error=False):
     return s
 
 
+def get_repo_title(pkg_conf, repo):
+    return pkg_conf["repos"][repo].get("title", repo)
+
+
 def release_latest_version(rls, vers, pkg_name):
     max_verl = [0, 0, 0]
     for repo in rls['repos']:
@@ -182,7 +187,8 @@ def print_versions(pkg_conf, vers, package_filter=None, release_filter=None):
             # print all release versions
             for repo in rls['repos']:
                 repo_name = repo['repo']
-                pp.puts(T.bold(repo_name), shift=1)
+                repo_title = get_repo_title(pkg_conf, repo_name)
+                pp.puts(T.bold(repo_title), shift=1)
                 for branch in repo['branches']:
                     try:
                         ver = vers[pkg_name][repo_name][branch]
