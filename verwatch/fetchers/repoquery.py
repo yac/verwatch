@@ -1,5 +1,6 @@
 from verwatch.fetch import VersionFetcher
-from verwatch.util import run, parse_nvr, safe_id
+from verwatch.util import run, parse_nvr
+import hashlib
 
 
 class RepoqueryFetcher(VersionFetcher):
@@ -12,7 +13,10 @@ class RepoqueryFetcher(VersionFetcher):
         self.repo_base = options['repo_base']
 
     def get_version(self, pkg_name, branch):
-        repoid = safe_id("verw_%s_%s_%s" % (self.repo_base[:10], self.repo_base[-10:], branch))
+        hsh = hashlib.md5()
+        hsh.update(self.repo_base)
+        hsh.update(branch)
+        repoid = "verw_%s" % hsh.hexdigest()
         errc, out, err = run("repoquery --repofrompath=%(repoid)s,%(repo_base)s/%(branch)s/ --repoid=%(repoid)s -q %(pkg_name)s" % {
                              'repo_base': self.repo_base,
                              'branch': branch,
