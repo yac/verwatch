@@ -19,11 +19,11 @@ WHAT CAN IT DO
     * `bodhi` (Fedora updates)
     * `koji` (Fedora build system)
  * save versions locally and query them offline
- * use pretty colors to mark latest/old versions
+ * use colors to mark latest/old versions
  * tree version structure: package -> release -> repo -> branch
  * supports multiple package configurations
- * filter shown packages using regexp
- * easily write and plug custom version fetchers
+ * filter shown packages and releases using regexp
+ * easily write, plug in and contribute custom version fetchers
 
 
 WHAT IS PLANNED
@@ -67,13 +67,30 @@ There is `verw` CLI frontend. Some use cases:
 
 For library usage, see `shell.py`.
 
+
+QUICKSTART
+----------
+
+    # your package manager or at least `pip` are better choices for installing
+    # python packages, but `easy_install` Just Works (TM)
+    sudo easy_install blessings docopt
+    git clone git@github.com:yac/verwatch.git
+    cd verwatch
+    sudo python setup.py install
+    mkdir -p ~/.verwatch/packages
+    cp examples/nova.json ~/.verwatch/packages
+    cd ~/.verwatch/packages
+    ln -s nova.json default.json
+    verw
+
+
 MAKE YOUR OWN VERSION FETCHER - EASY AS PIE!
 --------------------------------------------
 
 Long story short:
 
  1. Copy a builtin fetcher of your choice from `verwatch/fetchers` to `~/.verwatch/plugins`.
- 2. Modify to your needs.
+ 2. Modify to your needs. Check out `verwatch/fetch.py:VersionFetcher` for moar info.
  3. ???
  4. **Profit!**
 
