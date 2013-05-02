@@ -15,10 +15,10 @@
             }
         },
         "grizzly repo": {
-            "title": "grizzly side repo @ fedorapeople.org",
+            "title": "RDO",
             "fetcher": "repoquery",
             "options": {
-                "repo_base": "http://repos.fedorapeople.org/repos/openstack/openstack-grizzly/"
+                "repo_base": "http://rdo.fedorapeople.org/openstack/openstack-grizzly/"
             }
         },
         "bodhi": {

@@ -21,17 +21,20 @@ class FetcherManager(object):
         for fch_name, fch in repo_conf.items():
             fch_cls = fch['fetcher']
             if fch_cls not in verwatch.fetch.VersionFetcher.fetchers:
-                raise NotImplementedError("Version fetcher '%s' is not available." % fch_cls)
+                raise NotImplementedError(
+                            "Version fetcher '%s' is not available." % fch_cls)
             fcls = verwatch.fetch.VersionFetcher.fetchers[fch_cls]
-            options=fch.get('options', {})
+            options = fch.get('options', {})
             options['id'] = fch_name
             self.fchs[fch_name] = fcls(paths=paths,
                                        options=options,
-                                       alter_pkg_name=fch.get('alter_pkg_name'))
+                                       alter_pkg_name=fch.get('alter_pkg_name')
+                                       )
 
     def fetch_version(self, repo, pkg, branch):
         if repo not in self.fchs:
-            raise ValueError("Repo '%s' not configured but referenced by '%s'." % (repo, pkg))
+            raise ValueError("Repo '%s' not configured but referenced by '%s'."
+                             % (repo, pkg))
         return self.fchs[repo].get_version(pkg, branch)
 
 
@@ -46,22 +49,39 @@ class UberPrinter(object):
         self.indent += n
         self.indent_str = self.indent * self.indent_cols * ' '
 
-    def puts(self, pstr, shift=0):
+    def puts(self, pstr="", shift=0):
         print "%s%s%s" % (self.prefix, self.indent_str, str(pstr))
         if shift:
             self.shift(shift)
 
 
-def fetch_versions(pkg_conf, paths):
+def filter_pkg_conf(pkg_conf, package_filter=None, release_filter=None):
+    pkgs = pkg_conf['packages']
+    if package_filter:
+        pkgs = filter(lambda x: re.search(package_filter, x['name']), pkgs)
+    if release_filter:
+        for pkg in pkgs:
+            rlss = filter(lambda x: re.search(release_filter, x['name']),
+                          pkg['releases'])
+            if not rlss:
+                pkgs.remove(pkg)
+            else:
+                pkg['releases'] = rlss
+    pkg_conf['packages'] = pkgs
+    return pkg_conf
+
+
+def fetch_versions(pkg_conf, paths, vers={}):
     pp = UberPrinter(T.yellow('[fetch] '))
-    pp.puts("Fetching versions of %s packages:" % len(pkg_conf['packages']), shift=1)
+    pp.puts("Fetching versions of %s packages:" % len(pkg_conf['packages']),
+            shift=1)
     fm = FetcherManager(pkg_conf['repos'], paths)
-    vers = {}
     for pkg in pkg_conf['packages']:
         pkg_name = pkg['name']
         pp.puts("%s" % pkg_name, shift=1)
-        pkgd = {}
-        vers[pkg_name] = pkgd
+        if pkg_name not in vers:
+            vers[pkg_name] = {}
+        pkgd = vers[pkg_name]
         for rls in pkg['releases']:
             pp.puts(rls['name'], shift=1)
             for repo in rls['repos']:
@@ -82,12 +102,12 @@ def fetch_versions(pkg_conf, paths):
             pp.shift(-1)
         pp.shift(-1)
     pp.shift(-1)
-    print
+    pp.puts()
     return vers
 
 
-def update_versions(pkg_conf, paths, ver_cache_fn):
-    vers = fetch_versions(pkg_conf, paths)
+def update_versions(pkg_conf, paths, ver_cache_fn, vers={}):
+    vers = fetch_versions(pkg_conf, paths, vers)
     verwatch.util.mkdir_file(ver_cache_fn)
     json.dump(vers, open(ver_cache_fn, 'wb'))
     return vers
@@ -129,7 +149,8 @@ def render_version(ver, max_ver=None, show_error=False):
             try:
                 err_msg = ver['error']
             except KeyError:
-                err_msg = "BUG: No version fetched but fetcher didn't return error. Fetcher bug!"
+                err_msg = ("BUG: No version fetched but fetcher didn't return "
+                           "error. Fetcher bug!")
         else:
             err_msg = '!!'
         s = T.red(err_msg)
@@ -163,18 +184,12 @@ def release_latest_version(rls, vers, pkg_name):
     return '.'.join(map(str, max_verl))
 
 
-def print_versions(pkg_conf, vers, package_filter=None, release_filter=None):
+def print_versions(pkg_conf, vers):
     pp = UberPrinter()
     first = True
     pkgs = pkg_conf['packages']
-    if package_filter:
-        pkgs = filter(lambda x: re.search(package_filter, x['name']), pkgs)
     for pkg in pkgs:
         rlss = pkg['releases']
-        if release_filter:
-            rlss = filter(lambda x: re.search(release_filter, x['name']), rlss)
-            if not rlss:
-                continue
         pkg_name = pkg['name']
         if first:
             first = False
@@ -201,5 +216,3 @@ def print_versions(pkg_conf, vers, package_filter=None, release_filter=None):
         pp.shift(-1)
     pp.shift(-1)
     return vers
-
-
