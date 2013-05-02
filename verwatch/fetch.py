@@ -16,7 +16,8 @@ class VersionFetcher:
     """
     __metaclass__ = VersionFetcherMount
 
-    def __init__(self, paths=None, options=None, title=None, alter_pkg_name=None):
+    def __init__(self, paths=None, options=None, title=None,
+                 alter_pkg_name=None):
         """
         If you override __init__(), don't forget to call this!
 

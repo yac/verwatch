@@ -42,7 +42,8 @@ Available version fetchers:
           'pkgconf_dir': paths.pkgconf_dir,
           'plugins_dir': paths.plugins_dir,
           'cache_dir': paths.cache_dir,
-          'fetchers': "\n  ".join(sorted(verwatch.fetch.VersionFetcher.fetchers.keys()))
+          'fetchers': "\n  ".join(sorted(
+                                verwatch.fetch.VersionFetcher.fetchers.keys()))
       }
 
 from docopt import docopt

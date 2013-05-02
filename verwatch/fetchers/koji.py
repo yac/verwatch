@@ -15,7 +15,8 @@ class KojiFetcher(VersionFetcher):
         if not lines:
             return {'error': 'No results. Bad package name?'}
         if len(lines) > 1:
-            return {'error': "`koji latest-pkg` returned more than one result. WAT?"}
+            return {'error':
+                    "`koji latest-pkg` returned more than one result. WAT?"}
         line = lines[0]
         cols = re.split(' +', line)
         if len(cols) == 1:

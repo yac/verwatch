@@ -9,18 +9,18 @@ def is_version(ver):
 
 def parse_nvr(nvr, name):
     if nvr.startswith(name):
-        vr = nvr[len(name)+1:]
+        vr = nvr[len(name) + 1:]
         # TODO: might contain more than one '-'
         ri = vr.rfind('-')
         if ri < 0:
             return {'version': vr}
         ver = {}
         v = vr[0:ri]
-        ver['release'] = vr[ri+1:]
+        ver['release'] = vr[ri + 1:]
         ei = v.find(':')
         if ei >= 0:
             ver['epoch'] = v[0:ei]
-            ver['version'] = v[ei+1:]
+            ver['version'] = v[ei + 1:]
         else:
             ver['version'] = v
         return ver
