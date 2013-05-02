@@ -22,17 +22,17 @@ WHAT CAN IT DO
  * use colors to mark latest/old versions
  * tree version structure: package -> release -> repo -> branch
  * supports multiple package configurations
- * filter shown packages and releases using regexp
+ * filter listed/updated packages and releases using regexp
+   (that means selective update is easy)
  * easily write, plug in and contribute custom version fetchers
 
 
-WHAT IS PLANNED
----------------
+WHAT MIGHT BE DONE IN FUTURE
+----------------------------
 
  * HTML output (just a matter of transfroming JSON)
- * selective fetch (fetching can take a long time)
- * automatic fetch on old cache
- * documentation
+ * better documentation?
+ * automatic update on old cache?
  * tests?
 
 
@@ -63,7 +63,9 @@ There is `verw` CLI frontend. Some use cases:
  * `verw` :  lists versions for default packages.
  * `verw -u` :  updates and shows versions for default packages.
  * `verw -p clients` :  use `~/.verwatch/packages/clients.json` package config.
- * `verw 'nova|cinder'` :  show versions for packages matching supplied regex.
+ * `verw 'nova|cinder'` :  show versions of packages matching supplied regex.
+ * `verw -U -r 'grizzly' 'nova|cinder'` :  update versions/releases of packages
+   matching supplied regexes and exit.
 
 For library usage, see `shell.py`.
 
