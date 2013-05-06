@@ -92,11 +92,10 @@ def fetch_versions(pkg_conf, paths, vers={}):
                     pkgd[repo_name] = {}
                 repod = pkgd[repo_name]
                 for branch in repo['branches']:
-                    if branch not in repod:
-                        ver = fm.fetch_version(repo_name, pkg_name, branch)
-                        repod[branch] = ver
-                        ver_str = render_version(ver, show_error=True)
-                        pp.puts("%s: %s" % (branch, ver_str))
+                    ver = fm.fetch_version(repo_name, pkg_name, branch)
+                    repod[branch] = ver
+                    ver_str = render_version(ver, show_error=True)
+                    pp.puts("%s: %s" % (branch, ver_str))
 
                 pp.shift(-1)
             pp.shift(-1)
