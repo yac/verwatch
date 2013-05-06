@@ -20,8 +20,8 @@ class BodhiFetcher(VersionFetcher):
             pkg_vers = {}
             for line in out.rstrip().split('\n'):
                 line = line.strip()
-                branch, nvr = re.split(' +', line)
-                pkg_vers[branch] = parse_nvr(nvr, pkg_name)
+                br, nvr = re.split(' +', line)
+                pkg_vers[br] = parse_nvr(nvr, pkg_name)
             self.cache[pkg_name] = pkg_vers
         pkg_vers = self.cache[pkg_name]
         if branch not in pkg_vers:
