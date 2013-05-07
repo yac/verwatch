@@ -28,6 +28,13 @@
         "koji": {
             "title": "Fedora builds (koji)",
             "fetcher": "koji"
+        },
+        "brew": {
+            "title": "RHOS builds (brew)",
+            "fetcher": "koji",
+            "options": {
+                "command": "brew"
+            }
         }
     },
     "packages": [
@@ -65,6 +72,10 @@
                         {
                             "repo": "koji",
                             "branches": [ "f19", "f20" ]
+                        },
+                        {
+                            "repo": "brew",
+                            "branches": [ "rh-grizzly-rhel-6" ]
                         }
                     ]
                 },
@@ -113,6 +124,10 @@
                         {
                             "repo": "koji",
                             "branches": [ "f19", "f20" ]
+                        },
+                        {
+                            "repo": "brew",
+                            "branches": [ "rh-grizzly-rhel-6" ]
                         }
                     ]
                 },
@@ -161,6 +176,10 @@
                         {
                             "repo": "koji",
                             "branches": [ "f19", "f20" ]
+                        },
+                        {
+                            "repo": "brew",
+                            "branches": [ "rh-grizzly-rhel-6" ]
                         }
                     ]
                 },
@@ -209,6 +228,10 @@
                         {
                             "repo": "koji",
                             "branches": [ "f19", "f20" ]
+                        },
+                        {
+                            "repo": "brew",
+                            "branches": [ "rh-grizzly-rhel-6" ]
                         }
                     ]
                 },
@@ -257,6 +280,10 @@
                         {
                             "repo": "koji",
                             "branches": [ "f19", "f20" ]
+                        },
+                        {
+                            "repo": "brew",
+                            "branches": [ "rh-grizzly-rhel-6" ]
                         }
                     ]
                 },
@@ -297,6 +324,10 @@
                         {
                             "repo": "koji",
                             "branches": [ "f19", "f20" ]
+                        },
+                        {
+                            "repo": "brew",
+                            "branches": [ "rh-grizzly-rhel-6" ]
                         }
                     ]
                 },
@@ -328,6 +359,10 @@
                         {
                             "repo": "koji",
                             "branches": [ "f19", "f20" ]
+                        },
+                        {
+                            "repo": "brew",
+                            "branches": [ "rh-grizzly-rhel-6" ]
                         }
                     ]
                 },
