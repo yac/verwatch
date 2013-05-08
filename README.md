@@ -17,20 +17,20 @@ WHAT CAN IT DO
     * `git` (latest version tag)
     * `repoquery` (query rpm repos)
     * `bodhi` (Fedora updates)
-    * `koji` (Fedora build system)
+    * `koji` (Fedora build system, brew also works)
  * save versions locally and query them offline
  * use colors to mark latest/old versions
+ * HTML output (whole page or just embeddable/stylable tags)
  * tree version structure: package -> release -> repo -> branch
  * supports multiple package configurations
  * filter listed/updated packages and releases using regexp
-   (that means selective update is easy)
+   (easy selective update)
  * easily write, plug in and contribute custom version fetchers
 
 
 WHAT MIGHT BE DONE IN FUTURE
 ----------------------------
 
- * HTML output (just a matter of transfroming JSON)
  * better documentation?
  * automatic update on old cache?
  * tests?

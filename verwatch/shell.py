@@ -2,6 +2,7 @@
 import verwatch.core
 import verwatch.conf
 import verwatch.fetch
+import verwatch.html
 import os.path
 
 
@@ -24,6 +25,8 @@ Options:
   -u --update                   Update package version cache before listing
                                 versions.
   -U --update-only              Update package version cache and exit.
+  -H --html                     Output standalone styled HTML page.
+  --html-embed                  Output raw embeddable HTML.
   --version                     Print verwatch version and exit.
   -h --help                     Print this help and exit.
 
@@ -83,7 +86,12 @@ def main():
         if args['--update-only']:
             return 0
 
-    verwatch.core.print_versions(pkg_conf, vers)
+    if args['--html']:
+        print verwatch.html.render_versions_html_page(pkg_conf, vers)
+    elif args['--html-embed']:
+        print verwatch.html.render_versions_html(pkg_conf, vers)
+    else:
+        verwatch.core.print_versions(pkg_conf, vers)
 
 
 if __name__ == '__main__':

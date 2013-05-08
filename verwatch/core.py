@@ -86,7 +86,7 @@ def fetch_versions(pkg_conf, paths, vers={}):
             pp.puts(rls['name'], shift=1)
             for repo in rls['repos']:
                 repo_name = repo['repo']
-                repo_title = get_repo_title(pkg_conf, repo_name)
+                repo_title = verwatch.util.get_repo_title(pkg_conf, repo_name)
                 pp.puts(repo_title, shift=1)
                 if not repo_name in pkgd:
                     pkgd[repo_name] = {}
@@ -116,19 +116,6 @@ def cached_versions(ver_cache_fn):
     return json.load(open(ver_cache_fn, 'rb'))
 
 
-def is_same_version(ver1, ver2):
-    def _same_attr(h1, h2, attr):
-        if attr in h1:
-            if attr not in h2:
-                return False
-            return h1[attr] == h2[attr]
-        else:
-            return attr not in h2
-    return _same_attr(ver1, ver2, 'version') and \
-           _same_attr(ver1, ver2, 'release') and \
-           _same_attr(ver1, ver2, 'epoch')
-
-
 def render_version(ver, max_ver=None, show_error=False):
     s = ''
     if 'version' in ver:
@@ -155,32 +142,9 @@ def render_version(ver, max_ver=None, show_error=False):
         s = T.red(err_msg)
     if 'next' in ver:
         next_ver = ver['next']
-        if not is_same_version(ver, next_ver):
+        if not verwatch.util.is_same_version(ver, next_ver):
             s += ' -> ' + render_version(next_ver, max_ver)
     return s
-
-
-def get_repo_title(pkg_conf, repo):
-    return pkg_conf["repos"][repo].get("title", repo)
-
-
-def release_latest_version(rls, vers, pkg_name):
-    max_verl = [0, 0, 0]
-    for repo in rls['repos']:
-        for branch in repo['branches']:
-            try:
-                ver = vers[pkg_name][repo['repo']][branch]
-                while 'version' in ver:
-                    v = ver['version']
-                    verl = verwatch.util.ver2list(v)
-                    max_verl = max(verl, max_verl)
-                    if 'next_version' in ver:
-                        ver = ver['next_version']
-                    else:
-                        ver = {}
-            except KeyError:
-                continue
-    return '.'.join(map(str, max_verl))
 
 
 def print_versions(pkg_conf, vers):
@@ -197,11 +161,11 @@ def print_versions(pkg_conf, vers):
         pp.puts(T.bold("%s" % pkg_name), shift=1)
         for rls in rlss:
             pp.puts("[%s]" % T.bold(rls['name']), shift=1)
-            max_ver = release_latest_version(rls, vers, pkg_name)
+            max_ver = verwatch.util.release_latest_version(rls, vers, pkg_name)
             # print all release versions
             for repo in rls['repos']:
                 repo_name = repo['repo']
-                repo_title = get_repo_title(pkg_conf, repo_name)
+                repo_title = verwatch.util.get_repo_title(pkg_conf, repo_name)
                 pp.puts(T.bold(repo_title), shift=1)
                 for branch in repo['branches']:
                     try:
