@@ -21,13 +21,37 @@
                 "repo_base": "http://repos.fedorapeople.org/repos/openstack/openstack-grizzly"
             }
         },
+        "RDO grizzly os": {
+            "title": "RDO",
+            "fetcher": "repoquery",
+            "alter_pkg_name": {
+                "prefix": "openstack-"
+            },
+            "options": {
+                "repo_base": "http://repos.fedorapeople.org/repos/openstack/openstack-grizzly"
+            }
+        },
         "bodhi": {
             "title": "Fedora updates (bodhi)",
             "fetcher": "bodhi"
         },
+        "bodhi os": {
+            "title": "Fedora updates (bodhi)",
+            "fetcher": "bodhi",
+            "alter_pkg_name": {
+                "prefix": "openstack-"
+            }
+        },
         "koji": {
             "title": "Fedora builds (koji)",
             "fetcher": "koji"
+        },
+        "koji os": {
+            "title": "Fedora builds (koji)",
+            "fetcher": "koji",
+            "alter_pkg_name": {
+                "prefix": "openstack-"
+            }
         },
         "brew": {
             "title": "RHOS builds (brew)",
@@ -35,9 +59,115 @@
             "options": {
                 "command": "brew"
             }
+        },
+        "brew os": {
+            "title": "RHOS builds (brew)",
+            "fetcher": "koji",
+            "alter_pkg_name": {
+                "prefix": "openstack-"
+            },
+            "options": {
+                "command": "brew"
+            }
         }
     },
     "packages": [
+        {
+            "names": [
+                "nova",
+                "keystone",
+                "glance",
+                "cinder",
+                "swift"
+            ],
+            "releases": [
+                {
+                    "name": "folsom",
+                    "repos": [
+                        {
+                            "repo": "redhat-openstack",
+                            "branches": [ "f18-patches" ]
+                        },
+                        {
+                            "repo": "bodhi os",
+                            "branches": [ "f18-updates", "dist-6E-epel" ]
+                        },
+                        {
+                            "repo": "koji os",
+                            "branches": [ "f18", "dist-6E-epel" ]
+                        },
+                        {
+                            "repo": "brew os",
+                            "branches": [ "rh-folsom-rhel-6" ]
+                        }
+                    ]
+                },
+                {
+                    "name": "grizzly",
+                    "repos": [
+                        {
+                            "repo": "redhat-openstack",
+                            "branches": [ "f19-patches", "master-patches" ]
+                        },
+                        {
+                            "repo": "RDO grizzly os",
+                            "branches": [ "fedora-18", "fedora-19", "epel-6" ]
+                        },
+                        {
+                            "repo": "koji os",
+                            "branches": [ "f19", "f20" ]
+                        },
+                        {
+                            "repo": "brew os",
+                            "branches": [ "rh-grizzly-rhel-6" ]
+                        }
+                    ]
+                },
+                {
+                    "name": "upstream",
+                    "repos": [
+                        {
+                            "repo": "openstack",
+                            "branches": [ "master" ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "names": [
+                "heat",
+                "ceilometer"
+            ],
+            "releases": [
+                {
+                    "name": "grizzly",
+                    "repos": [
+                        {
+                            "repo": "RDO grizzly os",
+                            "branches": [ "fedora-18", "fedora-19", "epel-6" ]
+                        },
+                        {
+                            "repo": "koji os",
+                            "branches": [ "f19", "f20" ]
+                        },
+                        {
+                            "repo": "brew os",
+                            "branches": [ "rh-grizzly-rhel-6" ]
+                        }
+                    ]
+                },
+                {
+                    "name": "upstream",
+                    "repos": [
+                        {
+                            "repo": "openstack",
+                            "branches": [ "master" ]
+                        }
+                    ]
+                }
+            ]
+        },
         {
             "names": [
                 "python-novaclient",

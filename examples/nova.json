@@ -14,8 +14,8 @@
                 "repo_base": "https://github.com/redhat-openstack/"
             }
         },
-        "grizzly repo": {
-            "title": "grizzly side repo @ fedorapeople.org",
+        "RDO grizzly": {
+            "title": "RDO",
             "fetcher": "repoquery",
             "alter_pkg_name": {
                 "prefix": "openstack-"
@@ -76,7 +76,7 @@
                             "branches": [ "f19-patches" ]
                         },
                         {
-                            "repo": "grizzly repo",
+                            "repo": "RDO grizzly",
                             "branches": [ "fedora-18", "fedora-19", "epel-6" ]
                         },
                         {
