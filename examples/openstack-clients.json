@@ -39,7 +39,13 @@
     },
     "packages": [
         {
-            "name": "python-novaclient",
+            "names": [
+                "python-novaclient",
+                "python-keystoneclient",
+                "python-glanceclient",
+                "python-cinderclient",
+                "python-quantumclient"
+            ],
             "releases": [
                 {
                     "name": "folsom",
@@ -55,214 +61,10 @@
                         {
                             "repo": "koji",
                             "branches": [ "f18", "dist-6E-epel" ]
-                        }
-                    ]
-                },
-                {
-                    "name": "grizzly",
-                    "repos": [
-                        {
-                            "repo": "redhat-openstack",
-                            "branches": [ "stable/grizzly" ]
-                        },
-                        {
-                            "repo": "grizzly repo",
-                            "branches": [ "fedora-18", "fedora-19", "epel-6" ]
-                        },
-                        {
-                            "repo": "koji",
-                            "branches": [ "f19", "f20" ]
                         },
                         {
                             "repo": "brew",
-                            "branches": [ "rh-grizzly-rhel-6" ]
-                        }
-                    ]
-                },
-                {
-                    "name": "upstream",
-                    "repos": [
-                        {
-                            "repo": "openstack",
-                            "branches": [ "master" ]
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "python-glanceclient",
-            "releases": [
-                {
-                    "name": "folsom",
-                    "repos": [
-                        {
-                            "repo": "redhat-openstack",
-                            "branches": [ "stable/folsom" ]
-                        },
-                        {
-                            "repo": "bodhi",
-                            "branches": [ "f18-updates", "dist-6E-epel" ]
-                        },
-                        {
-                            "repo": "koji",
-                            "branches": [ "f18", "dist-6E-epel" ]
-                        }
-                    ]
-                },
-                {
-                    "name": "grizzly",
-                    "repos": [
-                        {
-                            "repo": "redhat-openstack",
-                            "branches": [ "stable/grizzly" ]
-                        },
-                        {
-                            "repo": "grizzly repo",
-                            "branches": [ "fedora-18", "fedora-19", "epel-6" ]
-                        },
-                        {
-                            "repo": "koji",
-                            "branches": [ "f19", "f20" ]
-                        },
-                        {
-                            "repo": "brew",
-                            "branches": [ "rh-grizzly-rhel-6" ]
-                        }
-                    ]
-                },
-                {
-                    "name": "upstream",
-                    "repos": [
-                        {
-                            "repo": "openstack",
-                            "branches": [ "master" ]
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "python-keystoneclient",
-            "releases": [
-                {
-                    "name": "folsom",
-                    "repos": [
-                        {
-                            "repo": "redhat-openstack",
-                            "branches": [ "stable/folsom" ]
-                        },
-                        {
-                            "repo": "bodhi",
-                            "branches": [ "f18-updates", "dist-6E-epel" ]
-                        },
-                        {
-                            "repo": "koji",
-                            "branches": [ "f18", "dist-6E-epel" ]
-                        }
-                    ]
-                },
-                {
-                    "name": "grizzly",
-                    "repos": [
-                        {
-                            "repo": "redhat-openstack",
-                            "branches": [ "stable/grizzly" ]
-                        },
-                        {
-                            "repo": "grizzly repo",
-                            "branches": [ "fedora-18", "fedora-19", "epel-6" ]
-                        },
-                        {
-                            "repo": "koji",
-                            "branches": [ "f19", "f20" ]
-                        },
-                        {
-                            "repo": "brew",
-                            "branches": [ "rh-grizzly-rhel-6" ]
-                        }
-                    ]
-                },
-                {
-                    "name": "upstream",
-                    "repos": [
-                        {
-                            "repo": "openstack",
-                            "branches": [ "master" ]
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "python-cinderclient",
-            "releases": [
-                {
-                    "name": "folsom",
-                    "repos": [
-                        {
-                            "repo": "redhat-openstack",
-                            "branches": [ "stable/folsom" ]
-                        },
-                        {
-                            "repo": "bodhi",
-                            "branches": [ "f18-updates", "dist-6E-epel" ]
-                        },
-                        {
-                            "repo": "koji",
-                            "branches": [ "f18", "dist-6E-epel" ]
-                        }
-                    ]
-                },
-                {
-                    "name": "grizzly",
-                    "repos": [
-                        {
-                            "repo": "redhat-openstack",
-                            "branches": [ "stable/grizzly" ]
-                        },
-                        {
-                            "repo": "grizzly repo",
-                            "branches": [ "fedora-18", "fedora-19", "epel-6" ]
-                        },
-                        {
-                            "repo": "koji",
-                            "branches": [ "f19", "f20" ]
-                        },
-                        {
-                            "repo": "brew",
-                            "branches": [ "rh-grizzly-rhel-6" ]
-                        }
-                    ]
-                },
-                {
-                    "name": "upstream",
-                    "repos": [
-                        {
-                            "repo": "openstack",
-                            "branches": [ "master" ]
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "python-quantumclient",
-            "releases": [
-                {
-                    "name": "folsom",
-                    "repos": [
-                        {
-                            "repo": "redhat-openstack",
-                            "branches": [ "stable/folsom" ]
-                        },
-                        {
-                            "repo": "bodhi",
-                            "branches": [ "f18-updates", "dist-6E-epel" ]
-                        },
-                        {
-                            "repo": "koji",
-                            "branches": [ "f18", "dist-6E-epel" ]
+                            "branches": [ "rh-folsom-rhel-6" ]
                         }
                     ]
                 },
@@ -311,6 +113,10 @@
                         {
                             "repo": "koji",
                             "branches": [ "f18", "dist-6E-epel" ]
+                        },
+                        {
+                            "repo": "brew",
+                            "branches": [ "rh-folsom-rhel-6" ]
                         }
                     ]
                 },

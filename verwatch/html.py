@@ -29,7 +29,7 @@ table.branches td { padding: 0 0.5em 0.2em; }
 table.branches td.branch { font-weight: bold; text-align: right; }
 table.branches td.version { font-weight: bold; padding-left: 0.4em; }
 
-.ver-old { color: #CC9900; }
+.ver-old, .ver-unknown { color: #CC9900; }
 .ver-new { color: #336633; }
 .ver-error { color: #A60000; }
 .ver-sep { color: #9A9A9A; font-weight: normal; }
@@ -106,7 +106,7 @@ def render_versions_html(pkg_conf, vers):
                         ver = vers[pkg_name][repo_name][branch]
                         ver_str = render_version_html(ver, max_ver)
                     except KeyError:
-                        ver_str = '??'
+                        ver_str = '<span class="ver-unknown">??</span>'
                     html += ("<tr><td class=\"branch\">%s:</td>"
                              "<td class=\"version\">%s</td></tr>\n"
                              % (branch, ver_str))

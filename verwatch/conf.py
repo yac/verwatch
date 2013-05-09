@@ -29,7 +29,20 @@ class PathsManager(object):
 
 
 def get_package_conf(conf_fn):
-    return json.load(open(conf_fn))
+    pkg_conf = json.load(open(conf_fn))
+    pkgs = pkg_conf['packages']
+    # expand multiple packages
+    for i, pkg in enumerate(pkgs):
+        if 'names' not in pkg:
+            continue
+        pkgs.remove(pkg)
+        names = pkg.pop('names')
+        for name in reversed(names):
+            npkg = pkg.copy()
+            npkg['name'] = name
+            pkgs.insert(i, npkg)
+    return pkg_conf
+
 
 
 def import_file(fn):
