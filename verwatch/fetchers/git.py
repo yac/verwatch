@@ -49,24 +49,21 @@ class GitFetcher(VersionFetcher):
                 return {'error': e.args[0]}
             os.chdir(repo_dir)
         ver = {}
-        cmd = ('git log --tags --simplify-by-decoration '
-               '--pretty="format:%%d" origin/%s' % branch)
+        cmd = 'git describe --abbrev=0 --tags origin/%s' % branch
         ver['cmd'] = cmd
         errc, out, err = run(cmd)
         if errc:
             err_msg = err or out
-            if err_msg.find("unknown revision") >= 0:
+            if err_msg.find("Not a valid object name") >= 0:
                 err_msg = "Branch '%s' doesn't seem to exist." % branch
             else:
                 err_msg = 'git log failed: %s' % err_msg
             ver['error'] = err_msg
             return ver
         # dark parsing magic, move along
-        tags = out.rstrip().split('\n')
-        tags = map(lambda s: re.split(', ', s.lstrip(' (').rstrip(') ')), tags)
-        tags = filter(is_version, [tag for taglist in tags for tag in taglist])
-        if tags:
-            ver['version'] = tags[0]
+        tag = out.rstrip()
+        if tag:
+            ver['version'] = tag
         else:
             ver['error'] = "No git tags found in repo."
         return ver
