@@ -76,7 +76,7 @@ QUICKSTART
     # your package manager or at least `pip` are better choices for installing
     # python packages, but `easy_install` Just Works (TM)
     sudo easy_install blessings docopt
-    git clone git@github.com:yac/verwatch.git
+    git clone https://github.com/yac/verwatch.git
     cd verwatch
     sudo python setup.py install
     mkdir -p ~/.verwatch/packages
