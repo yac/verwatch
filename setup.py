@@ -9,8 +9,8 @@ setuptools.setup(
     description='Package version watch utility',
     author='Jakub Ruzicka',
     author_email='jruzicka@redhat.com',
-    #url='http://',
-    #packages=['distutils', 'distutils.command'],
+    url='http://github.com/yac/verwatch',
+    packages=['verwatch'],
     entry_points={
         "console_scripts": ["verw = verwatch.shell:main"]
     }
