@@ -52,23 +52,6 @@
             "alter_pkg_name": {
                 "prefix": "openstack-"
             }
-        },
-        "brew": {
-            "title": "RHOS builds (brew)",
-            "fetcher": "koji",
-            "options": {
-                "command": "brew"
-            }
-        },
-        "brew os": {
-            "title": "RHOS builds (brew)",
-            "fetcher": "koji",
-            "alter_pkg_name": {
-                "prefix": "openstack-"
-            },
-            "options": {
-                "command": "brew"
-            }
         }
     },
     "packages": [
@@ -95,10 +78,6 @@
                         {
                             "repo": "koji os",
                             "branches": [ "f18", "dist-6E-epel" ]
-                        },
-                        {
-                            "repo": "brew os",
-                            "branches": [ "rh-folsom-rhel-6" ]
                         }
                     ]
                 },
@@ -116,10 +95,6 @@
                         {
                             "repo": "koji os",
                             "branches": [ "f19", "f20" ]
-                        },
-                        {
-                            "repo": "brew os",
-                            "branches": [ "rh-grizzly-rhel-6" ]
                         }
                     ]
                 },
@@ -150,10 +125,6 @@
                         {
                             "repo": "koji os",
                             "branches": [ "f19", "f20" ]
-                        },
-                        {
-                            "repo": "brew os",
-                            "branches": [ "rh-grizzly-rhel-6" ]
                         }
                     ]
                 },
@@ -191,10 +162,6 @@
                         {
                             "repo": "koji",
                             "branches": [ "f18", "dist-6E-epel" ]
-                        },
-                        {
-                            "repo": "brew",
-                            "branches": [ "rh-folsom-rhel-6" ]
                         }
                     ]
                 },
@@ -212,10 +179,6 @@
                         {
                             "repo": "koji",
                             "branches": [ "f19", "f20" ]
-                        },
-                        {
-                            "repo": "brew",
-                            "branches": [ "rh-grizzly-rhel-6" ]
                         }
                     ]
                 },
@@ -243,10 +206,6 @@
                         {
                             "repo": "koji",
                             "branches": [ "f18", "dist-6E-epel" ]
-                        },
-                        {
-                            "repo": "brew",
-                            "branches": [ "rh-folsom-rhel-6" ]
                         }
                     ]
                 },
@@ -260,10 +219,6 @@
                         {
                             "repo": "koji",
                             "branches": [ "f19", "f20" ]
-                        },
-                        {
-                            "repo": "brew",
-                            "branches": [ "rh-grizzly-rhel-6" ]
                         }
                     ]
                 },
@@ -295,10 +250,6 @@
                         {
                             "repo": "koji",
                             "branches": [ "f19", "f20" ]
-                        },
-                        {
-                            "repo": "brew",
-                            "branches": [ "rh-grizzly-rhel-6" ]
                         }
                     ]
                 },
