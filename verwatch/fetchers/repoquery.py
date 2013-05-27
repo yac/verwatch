@@ -26,20 +26,27 @@ class RepoqueryFetcher(VersionFetcher):
         hsh.update(self.repo_base)
         hsh.update(branch)
         repoid = "verw_%s" % hsh.hexdigest()
-        errc, out, err = run("repoquery "
-                         "--repofrompath=%(repoid)s,%(repo_base)s/%(branch)s/ "
-                             "--repoid=%(repoid)s -q %(pkg_name)s" % {
-                             'repo_base': self.repo_base,
-                             'branch': branch,
-                             'pkg_name': pkg_name,
-                             'repoid': repoid})
+        ver = {}
+        cmd = ("repoquery "
+               "--repofrompath=%(repoid)s,%(repo_base)s/%(branch)s/ "
+               "--repoid=%(repoid)s -q %(pkg_name)s" % {
+                   'repo_base': self.repo_base,
+                   'branch': branch,
+                   'pkg_name': pkg_name,
+                   'repoid': repoid})
+        ver['cmd'] = cmd
+        errc, out, err = run(cmd)
         if errc:
-            return {'error': err or out}
+            ver['error'] = err or out
+            return ver
         if not out:
-            return {'error': "No version found."}
+            ver['error'] = "No version found."
+            return ver
         lines = out.strip().split("\n")
         if len(lines) > 1:
             # TODO: Select best version.
             msg = "Got more than 1 version using repoquery... FIXME!"
             raise NotImplementedError(msg)
-        return parse_nvr(lines[0], pkg_name)
+        nvr = parse_nvr(lines[0], pkg_name)
+        ver.update(nvr)
+        return ver

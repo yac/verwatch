@@ -11,12 +11,17 @@ class BodhiFetcher(VersionFetcher):
         self.cache = {}
 
     def _get_version(self, pkg_name, branch):
+        ver = {}
+        cmd = 'bodhi -L %s' % pkg_name
+        ver['cmd'] = cmd
         if pkg_name not in self.cache:
-            errc, out, err = run('bodhi -L %s' % pkg_name)
+            errc, out, err = run(cmd)
             if errc:
-                return {'error': err or out}
+                ver['error'] =  err or out
+                return ver
             if not out:
-                return {'error': 'No version returned.'}
+                ver['error'] = 'No version returned.'
+                return ver
             pkg_vers = {}
             for line in out.rstrip().split('\n'):
                 line = line.strip()
@@ -25,9 +30,11 @@ class BodhiFetcher(VersionFetcher):
             self.cache[pkg_name] = pkg_vers
         pkg_vers = self.cache[pkg_name]
         if branch not in pkg_vers:
-            return {'error': "Tag not found."}
-        ver = pkg_vers[branch]
+            ver['error'] = "Tag not found."
+            return ver
+        ver.update(pkg_vers[branch])
         testing_branch = "%s-testing" % branch
         if testing_branch in pkg_vers:
             ver['next'] = pkg_vers[testing_branch]
+            ver['next']['cmd'] = cmd
         return ver

@@ -25,6 +25,7 @@ Options:
   -u --update                   Update package version cache before listing
                                 versions.
   -U --update-only              Update package version cache and exit.
+  -c --show-commands            Show commands used to obtain versions.
   -H --html                     Output standalone styled HTML page.
   --html-embed                  Output raw embeddable HTML.
   --version                     Print verwatch version and exit.
@@ -59,6 +60,7 @@ def main():
 
     args = docopt(help(paths), version=verwatch.core.VERSION, help=True)
 
+    show_cmd = args['--show-commands']
     update = args['--update'] or args['--update-only']
     if args['--package-conf']:
         pkg_conf_id = args['--package-conf']
@@ -82,7 +84,7 @@ def main():
 
     if update:
         vers = verwatch.core.update_versions(pkg_conf, paths, ver_cache_fn,
-                                             vers)
+                                             vers, show_cmd)
         if args['--update-only']:
             return 0
 
@@ -91,7 +93,7 @@ def main():
     elif args['--html-embed']:
         print verwatch.html.render_versions_html(pkg_conf, vers)
     else:
-        verwatch.core.print_versions(pkg_conf, vers)
+        verwatch.core.print_versions(pkg_conf, vers, show_cmd)
 
 
 if __name__ == '__main__':

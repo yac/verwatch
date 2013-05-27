@@ -71,7 +71,7 @@ def filter_pkg_conf(pkg_conf, package_filter=None, release_filter=None):
     return pkg_conf
 
 
-def fetch_versions(pkg_conf, paths, vers={}):
+def fetch_versions(pkg_conf, paths, vers={}, show_commands=False):
     pp = UberPrinter(T.yellow('[fetch] '))
     pp.puts("Fetching versions of %s packages:" % len(pkg_conf['packages']),
             shift=1)
@@ -93,10 +93,11 @@ def fetch_versions(pkg_conf, paths, vers={}):
                 repod = pkgd[repo_name]
                 for branch in repo['branches']:
                     ver = fm.fetch_version(repo_name, pkg_name, branch)
+                    if show_commands and 'cmd' in ver:
+                        pp.puts('$ %s' % ver['cmd'])
                     repod[branch] = ver
                     ver_str = render_version(ver, show_error=True)
                     pp.puts("%s: %s" % (branch, ver_str))
-
                 pp.shift(-1)
             pp.shift(-1)
         pp.shift(-1)
@@ -105,8 +106,8 @@ def fetch_versions(pkg_conf, paths, vers={}):
     return vers
 
 
-def update_versions(pkg_conf, paths, ver_cache_fn, vers={}):
-    vers = fetch_versions(pkg_conf, paths, vers)
+def update_versions(pkg_conf, paths, ver_cache_fn, vers={}, show_cmd=False):
+    vers = fetch_versions(pkg_conf, paths, vers, show_cmd)
     verwatch.util.mkdir_file(ver_cache_fn)
     json.dump(vers, open(ver_cache_fn, 'wb'))
     return vers
@@ -147,7 +148,7 @@ def render_version(ver, max_ver=None, show_error=False):
     return s
 
 
-def print_versions(pkg_conf, vers):
+def print_versions(pkg_conf, vers, show_commands=False):
     pp = UberPrinter()
     first = True
     pkgs = pkg_conf['packages']
@@ -173,6 +174,8 @@ def print_versions(pkg_conf, vers):
                         ver_str = render_version(ver, max_ver)
                     except KeyError:
                         ver_str = T.yellow('??')
+                    if show_commands and 'cmd' in ver:
+                        pp.puts("$ %s" % ver['cmd'])
                     pp.puts("%s: %s" % (branch, ver_str))
                 pp.shift(-1)
             pp.shift(-1)
