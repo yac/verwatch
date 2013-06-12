@@ -23,35 +23,45 @@ class GitFetcher(VersionFetcher):
         self.paths = kwargs['paths']
         self.repo_base = options['repo_base']
         # 'id' is supplied by verwatch
-        self.repo_base_dir = "%s/git/%s" % (self.paths.cache_dir, options['id']
-                                           )
+        self.repo_base_dir = "%s/%s/%s" % (self.paths.cache_dir, self.name,
+                                           options['id'])
         if not os.path.isdir(self.repo_base_dir):
             os.makedirs(self.repo_base_dir)
+        self.cmd = None
 
     def _clone_repo(self, pkg_name):
         os.chdir(self.repo_base_dir)
         repo_url = '%s%s.git' % (self.repo_base, pkg_name)
-        errc, out, err = run('git clone "%s"' % repo_url)
+        self.cmd = 'git clone "%s"' % repo_url
+        errc, out, err = run(self.cmd)
         if errc:
             raise RuntimeError("git clone failed: %s" % err)
 
-    def _get_version(self, pkg_name, branch):
+    def _prepare_repo(self, pkg_name):
+        """
+        Clone/fetch repo and chdir into it.
+        """
         repo_dir = "%s/%s" % (self.repo_base_dir, pkg_name)
         if os.path.isdir(repo_dir):
             os.chdir(repo_dir)
-            errc, out, err = run('git fetch --all')
+            self.cmd = 'git fetch --all'
+            errc, out, err = run(self.cmd)
             if errc:
-                return {'error': 'git fetch failed: %s' % (err or out)}
+                return {'error': 'git fetch failed: %s' % (err or out),
+                        'cmd': self.cmd}
         else:
-            try:
-                self._clone_repo(pkg_name)
-            except RuntimeError, e:
-                return {'error': e.args[0]}
+            self._clone_repo(pkg_name)
             os.chdir(repo_dir)
+
+    def _get_version(self, pkg_name, branch):
+        try:
+            self._prepare_repo(pkg_name)
+        except RuntimeError, e:
+            return {'error': e.args[0], 'cmd': self.cmd}
         ver = {}
-        cmd = 'git describe --abbrev=0 --tags origin/%s' % branch
-        ver['cmd'] = cmd
-        errc, out, err = run(cmd)
+        self.cmd = 'git describe --abbrev=0 --tags origin/%s' % branch
+        ver['cmd'] = self.cmd
+        errc, out, err = run(self.cmd)
         if errc:
             err_msg = err or out
             if err_msg.find("Not a valid object name") >= 0:
@@ -60,7 +70,6 @@ class GitFetcher(VersionFetcher):
                 err_msg = 'git log failed: %s' % err_msg
             ver['error'] = err_msg
             return ver
-        # dark parsing magic, move along
         tag = out.rstrip()
         if tag:
             ver['version'] = tag

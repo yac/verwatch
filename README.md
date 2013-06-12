@@ -15,6 +15,7 @@ WHAT CAN IT DO
 
  * fetch versions:
     * `git` (latest version tag)
+    * `distgit` (RPM specfile version in git)
     * `repoquery` (query rpm repos)
     * `bodhi` (Fedora updates)
     * `koji` (Fedora build system, brew also works)
@@ -31,6 +32,7 @@ WHAT CAN IT DO
 WHAT MIGHT BE DONE IN FUTURE
 ----------------------------
 
+ * distgit fetcher example
  * better documentation?
  * automatic update on old cache?
  * tests?
