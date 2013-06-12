@@ -38,6 +38,8 @@ def ver2list(ver):
 
 
 def get_repo_title(pkg_conf, repo):
+    if repo not in pkg_conf["repos"]:
+        return repo
     return pkg_conf["repos"][repo].get("title", repo)
 
 
