@@ -21,6 +21,13 @@
                 "repo_base": "http://repos.fedorapeople.org/repos/openstack/openstack-grizzly"
             }
         },
+        "fedora dist": {
+            "title": "Fedora dist-git @ pkgs.fedoraproject.org",
+            "fetcher": "distgit",
+            "options": {
+                "repo_base": "git://pkgs.fedoraproject.org/"
+            }
+        },
         "bodhi": {
             "title": "Fedora updates (bodhi)",
             "fetcher": "bodhi"
@@ -86,6 +93,10 @@
                         {
                             "repo": "brew",
                             "branches": [ "rh-grizzly-rhel-6" ]
+                        },
+                        {
+                            "repo": "fedora dist",
+                            "branches": [ "f19", "master", "el6" ]
                         }
                     ]
                 },
@@ -134,6 +145,10 @@
                         {
                             "repo": "brew",
                             "branches": [ "rh-grizzly-rhel-6" ]
+                        },
+                        {
+                            "repo": "fedora dist",
+                            "branches": [ "f19", "master", "el6" ]
                         }
                     ]
                 },
@@ -169,6 +184,10 @@
                         {
                             "repo": "brew",
                             "branches": [ "rh-grizzly-rhel-6" ]
+                        },
+                        {
+                            "repo": "fedora dist",
+                            "branches": [ "f19", "master", "el6" ]
                         }
                     ]
                 },

@@ -47,5 +47,5 @@ class DistGitFetcher(GitFetcher):
             'release': release,
         }
         if 'epoch' in spec.sourceHeader:
-            ver['epoch'] = int(spec.sourceHeader['epoch'])
+            ver['epoch'] = str(spec.sourceHeader['epoch'])
         return ver

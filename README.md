@@ -32,7 +32,6 @@ WHAT CAN IT DO
 WHAT MIGHT BE DONE IN FUTURE
 ----------------------------
 
- * distgit fetcher example
  * better documentation?
  * automatic update on old cache?
  * tests?

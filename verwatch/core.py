@@ -121,7 +121,7 @@ def render_version(ver, max_ver=None, show_error=False):
     s = ''
     if 'version' in ver:
         if 'epoch' in ver:
-            e = ver['epoch']
+            e = str(ver['epoch'])
             s += T.cyan(e) + T.bold_black(':')
         v = ver['version']
         if max_ver and v == max_ver:
