@@ -38,9 +38,13 @@ class DistGitFetcher(GitFetcher):
             spec = rpm.ts().parseSpec(spec_fn)
         except ValueError, e:
             return {'error': "Error parsing '%s': %s" % (spec_fn, e.args[0])}
+        dist = rpm.expandMacro("%{dist}")
+        release = spec.sourceHeader['release']
+        if release.endswith(dist):
+            release = release[:-len(dist)]
         ver = {
             'version': spec.sourceHeader['version'],
-            'release': spec.sourceHeader['release'],
+            'release': release,
         }
         if 'epoch' in spec.sourceHeader:
             ver['epoch'] = int(spec.sourceHeader['epoch'])
