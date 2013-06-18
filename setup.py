@@ -10,7 +10,7 @@ setuptools.setup(
     author='Jakub Ruzicka',
     author_email='jruzicka@redhat.com',
     url='http://github.com/yac/verwatch',
-    packages=['verwatch'],
+    packages=['verwatch','verwatch.fetchers'],
     entry_points={
         "console_scripts": ["verw = verwatch.shell:main"]
     }
