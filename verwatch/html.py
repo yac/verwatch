@@ -3,23 +3,14 @@
 import verwatch.util
 
 
-PAGE_TEMPLATE="""
-<!DOCTYPE html>
-<html>
-<head>
-<title>%(title)s</title>
-<style type="text/css">
-body { padding: 0; margin: 0; }
-
-div.package, div.release, div.repo, div.branches {
-	padding: 0; margin: 9px 30px;
-}
+CSS = \
+"""div.release, div.repo, div.branches { padding: 0; margin: 9px 30px; }
 h2.package, h3.release, h4.repo { margin: 0; padding: 0.3em 0 0.2em 8px; }
 
 div.package { margin-bottom: 3em; }
-h2.package { font-size: 36px; color: #034769; }
+h2.package { font-size: 36px; color: #034769; padding-left: 0px; }
 
-div.release { margin-bottom: 3em; }
+div.release { margin-bottom: 1em; }
 h3.release { font-size: 24px; color: #086FA1; }
 
 h4.repo { font-size: 18px; color: #04819E; }
@@ -34,6 +25,18 @@ table.branches td.version { font-weight: bold; padding-left: 0.4em; }
 .ver-error { color: #A60000; }
 .ver-sep { color: #9A9A9A; font-weight: normal; }
 .ver-extra { color: #444444; font-weight: normal; }
+"""
+
+
+PAGE_TEMPLATE="""
+<!DOCTYPE html>
+<html>
+<head>
+<title>%(title)s</title>
+<style type="text/css">
+body { padding: 0; margin: 0; }
+
+%(css)s
 </style>
 </head>
 
@@ -88,8 +91,8 @@ def render_versions_html(pkg_conf, vers):
             first = False
         else:
             html += "\n"
-        html += "<div class=\"package\"><h2 class=\"package\">%s</h2>\n" \
-                % pkg_name
+        html += ("<div class=\"package\" id=\"pkg-%s\"><h2 class=\"package\">"
+                 "%s</h2>\n" % (pkg_name, pkg_name))
         for rls in rlss:
             html += "<div class=\"release\"><h3 class=\"release\">%s</h3>\n" \
                     % rls['name']
@@ -119,6 +122,7 @@ def render_versions_html(pkg_conf, vers):
 
 def render_versions_html_page(pkg_conf, vers, title="verwatch versions"):
     page = PAGE_TEMPLATE % {
+           'css': CSS,
            'body': render_versions_html(pkg_conf, vers),
            'title': title
            }

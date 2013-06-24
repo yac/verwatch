@@ -11,7 +11,7 @@ import json
 import blessings
 
 
-VERSION = '0.2'
+VERSION = '0.3'
 T = blessings.Terminal()
 
 
