@@ -61,12 +61,10 @@ def filter_pkg_conf(pkg_conf, package_filter=None, release_filter=None):
         pkgs = filter(lambda x: re.search(package_filter, x['name']), pkgs)
     if release_filter:
         for pkg in pkgs:
-            rlss = filter(lambda x: re.search(release_filter, x['name']),
-                          pkg['releases'])
-            if not rlss:
-                pkgs.remove(pkg)
-            else:
-                pkg['releases'] = rlss
+            pkg['releases'] = \
+                filter(lambda x: re.search(release_filter, x['name']),
+                       pkg['releases'])
+        pkgs = [e for e in pkgs if e['releases']]
     pkg_conf['packages'] = pkgs
     return pkg_conf
 
