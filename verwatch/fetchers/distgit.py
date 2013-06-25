@@ -10,7 +10,7 @@ class DistGitFetcher(GitFetcher):
     name = 'distgit'
 
     def _checkout(self, branch):
-        self.cmd = 'git checkout "%s"' % branch
+        self.cmd = 'git checkout --force "%s"' % branch
         errc, out, err = run(self.cmd)
         if errc:
             raise RuntimeError("git checkout failed: %s" % err or out)
