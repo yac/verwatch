@@ -14,10 +14,10 @@ class DistGitFetcher(GitFetcher):
         errc, out, err = run(self.cmd)
         if errc:
             raise RuntimeError("git checkout failed: %s" % err or out)
-        self.cmd = 'git pull'
+        self.cmd = 'git reset --hard origin/%s' % branch
         errc, out, err = run(self.cmd)
         if errc:
-            raise RuntimeError("git pull failed: %s" % err or out)
+            raise RuntimeError("git reset --hard failed: %s" % err or out)
 
     def _get_version(self, pkg_name, branch):
         self.cmd = None
