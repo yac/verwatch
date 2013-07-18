@@ -43,6 +43,9 @@ class VersionFetcher:
                 pkg_name = self.alter_pkg_name["prefix"] + pkg_name
             if "postfix" in self.alter_pkg_name:
                 pkg_name += self.alter_pkg_name["postfix"]
+            if "replace" in self.alter_pkg_name:
+                for old, new in self.alter_pkg_name["replace"]:
+                    pkg_name = pkg_name.replace(old, new)
         return pkg_name
 
     def get_version(self, pkg_name, branch):
