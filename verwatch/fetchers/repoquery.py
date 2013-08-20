@@ -28,6 +28,7 @@ class RepoqueryFetcher(VersionFetcher):
         repoid = "verw_%s" % hsh.hexdigest()
         ver = {}
         cmd = ("repoquery "
+               "--nvr "
                "--repofrompath=%(repoid)s,%(repo_base)s/%(branch)s/ "
                "--repoid=%(repoid)s -q %(pkg_name)s" % {
                    'repo_base': self.repo_base,
