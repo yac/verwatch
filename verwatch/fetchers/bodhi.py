@@ -29,10 +29,10 @@ class BodhiFetcher(VersionFetcher):
                 pkg_vers[br] = parse_nvr(nvr, pkg_name)
             self.cache[pkg_name] = pkg_vers
         pkg_vers = self.cache[pkg_name]
-        if branch not in pkg_vers:
+        if branch in pkg_vers:
+            ver.update(pkg_vers[branch])
+        else:
             ver['error'] = "Tag not found."
-            return ver
-        ver.update(pkg_vers[branch])
         testing_branch = "%s-testing" % branch
         if testing_branch in pkg_vers:
             ver['next'] = pkg_vers[testing_branch]
