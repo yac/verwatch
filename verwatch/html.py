@@ -1,4 +1,8 @@
 # -*- encoding: utf-8 -*-
+#
+# This decadent code is a tribute to the "good" old PHP times of doing
+# everything yourself in one file. Enjoy!
+#
 
 import verwatch.util
 
