@@ -55,7 +55,15 @@ class UberPrinter(object):
             self.shift(shift)
 
 
-def filter_pkg_conf(pkg_conf, package_filter=None, release_filter=None):
+def repo_tags(repo, pkg_conf):
+    local_tags = set(repo.get('tags', []))
+    repos = pkg_conf['repos']
+    global_tags = set(repos.get(repo.get('repo'), {}).get('tags', []))
+    tags = local_tags.union(global_tags)
+    return tags
+
+
+def filter_pkg_conf(pkg_conf, package_filter=None, release_filter=None, repo_tag_filter=None):
     pkgs = pkg_conf['packages']
     if package_filter:
         pkgs = filter(lambda x: re.search(package_filter, x['name']), pkgs)
@@ -64,6 +72,22 @@ def filter_pkg_conf(pkg_conf, package_filter=None, release_filter=None):
             pkg['releases'] = \
                 filter(lambda x: re.search(release_filter, x['name']),
                        pkg['releases'])
+        pkgs = [e for e in pkgs if e['releases']]
+    if repo_tag_filter:
+        def _match_tag_filter(repo):
+            tags = repo_tags(repo, pkg_conf)
+            if not tags:
+                return False
+            for ftag in repo_tag_filter:
+                for tag in tags:
+                    if tag == ftag:
+                        return True
+            return False
+        for pkg in pkgs:
+            rlss = pkg['releases']
+            for rls in rlss:
+                rls['repos'] = filter(_match_tag_filter, rls['repos'])
+            pkg['releases'] = [e for e in rlss if e['repos']]
         pkgs = [e for e in pkgs if e['releases']]
     pkg_conf['packages'] = pkgs
     return pkg_conf

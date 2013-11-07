@@ -5,6 +5,7 @@
 #
 
 import verwatch.util
+import verwatch.core
 
 
 CSS = \
@@ -103,10 +104,12 @@ def render_versions_html(pkg_conf, vers):
             max_ver = verwatch.util.release_latest_version(rls, vers, pkg_name)
             # print all release versions
             for repo in rls['repos']:
+                tags = verwatch.core.repo_tags(repo, pkg_conf)
                 repo_name = repo['repo']
                 repo_title = verwatch.util.get_repo_title(pkg_conf, repo_name)
-                html += "<div class=\"repo\">\n<h4 class=\"repo\">%s</h4>\n" \
-                        % repo_title
+                cls = ["repo"] + map(lambda x: "repo-%s" % x, tags)
+                html += "<div class=\"%s\">\n<h4 class=\"repo\">%s</h4>\n" \
+                        % (" ".join(cls), "%s" % repo_title)
                 html += "<table class=\"branches\">\n"
                 for branch in repo['branches']:
                     try:
@@ -124,10 +127,14 @@ def render_versions_html(pkg_conf, vers):
     return html
 
 
-def render_versions_html_page(pkg_conf, vers, title="verwatch versions"):
+def render_versions_html_page(pkg_conf, vers, title="verwatch versions", css=None, tag_filter=None):
+    if css:
+        _css = "%s\n%s" % (css, CSS)
+    else:
+        _css = CSS
     page = PAGE_TEMPLATE % {
-           'css': CSS,
-           'body': render_versions_html(pkg_conf, vers),
+           'css': _css,
+           'body': render_versions_html(pkg_conf, vers, tag_filter=tag_filter),
            'title': title
            }
     return page
