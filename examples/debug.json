@@ -1,0 +1,92 @@
+{
+    "repos": {
+        "const-ver": {
+            "fetcher": "debug",
+            "title": "Constant Version",
+            "options": {
+                "version": "1.0"
+            }
+        },
+        "const-next": {
+            "fetcher": "debug",
+            "title": "Constant Next Version",
+            "options": {
+                "next": "1.1"
+            }
+        },
+        "const-both": {
+            "fetcher": "debug",
+            "title": "Constant Next Version",
+            "options": {
+                "version": "1.0",
+                "next": "1.1"
+            }
+        },
+        "bump-ver": {
+            "fetcher": "debug",
+            "title": "Increment Version",
+            "options": {
+                "version": "0.1",
+                "bump": "version"
+            }
+        },
+        "bump-next": {
+            "fetcher": "debug",
+            "title": "Increment Next Version",
+            "options": {
+                "next": "0.2",
+                "bump": "next"
+            }
+        },
+        "bump-both": {
+            "fetcher": "debug",
+            "title": "Increment Both",
+            "options": {
+                "version": "0.1",
+                "next": "0.2",
+                "bump": "both"
+            }
+        }
+    },
+    "packages": [
+        {
+            "name": "foo",
+            "releases": [
+                {
+                    "name": "stable version",
+                    "repos": [
+                        {
+                            "repo": "const-ver",
+                            "branches": [ "banana" ]
+                        },
+                        {
+                            "repo": "const-next",
+                            "branches": [ "banana" ]
+                        },
+                        {
+                            "repo": "const-both",
+                            "branches": [ "banana" ]
+                        }
+                    ]
+                },
+                {
+                    "name": "changing version",
+                    "repos": [
+                        {
+                            "repo": "bump-ver",
+                            "branches": [ "banana" ]
+                        },
+                        {
+                            "repo": "bump-next",
+                            "branches": [ "banana" ]
+                        },
+                        {
+                            "repo": "bump-both",
+                            "branches": [ "banana" ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
