@@ -204,3 +204,30 @@ def print_versions(pkg_conf, vers, show_commands=False):
         pp.shift(-1)
     pp.shift(-1)
     return vers
+
+
+def _insert_new_version(diff, pkg_name, repo_name, branch_name, new_version,
+                        old_version):
+    def dget(d, key):
+        if key not in d:
+            d[key] = {}
+        return d[key]
+    repo = dget(dget(diff, pkg_name), repo_name)
+    diff_version = new_version.copy()
+    if old_version:
+        diff_version['was'] = old_version
+    repo[branch_name] = diff_version
+
+
+def diff_versions(old_vers, new_vers):
+    diff = {}
+    for pkg_name, new_repos in new_vers.items():
+        old_repos = old_vers.get(pkg_name, {})
+        for repo_name, new_branches in new_repos.items():
+            old_branches = old_repos.get(repo_name, {})
+            for branch_name, new_version in new_branches.items():
+                old_version = old_branches.get(branch_name, {})
+                if new_version != old_version:
+                    _insert_new_version(diff, pkg_name, repo_name,
+                                        branch_name, new_version, old_version)
+    return diff
