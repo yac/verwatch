@@ -1,11 +1,8 @@
 # -*- encoding: utf-8 -*-
 
-import verwatch.conf
-import verwatch.util
-import verwatch.builtin_fetchers
-import verwatch.fetch
+import util
+import fetch
 
-import os
 import re
 import json
 import blessings
@@ -14,7 +11,7 @@ import blessings
 VERSION = '0.3'
 
 TERM = blessings.Terminal()
-TERM_PLAIN = verwatch.util.PlainTerminal()
+TERM_PLAIN = util.PlainTerminal()
 
 
 def _get_term(color):
@@ -28,16 +25,15 @@ class FetcherManager(object):
         self.fchs = {}
         for fch_name, fch in repo_conf.items():
             fch_cls = fch['fetcher']
-            if fch_cls not in verwatch.fetch.VersionFetcher.fetchers:
+            if fch_cls not in fetch.VersionFetcher.fetchers:
                 raise NotImplementedError(
-                            "Version fetcher '%s' is not available." % fch_cls)
-            fcls = verwatch.fetch.VersionFetcher.fetchers[fch_cls]
+                    "Version fetcher '%s' is not available." % fch_cls)
+            fcls = fetch.VersionFetcher.fetchers[fch_cls]
             options = fch.get('options', {})
             options['id'] = fch_name
             self.fchs[fch_name] = fcls(paths=paths,
                                        options=options,
-                                       alter_pkg_name=fch.get('alter_pkg_name')
-                                       )
+                                       alter_pkg_name=fch.get('alter_pkg_name'))
 
     def fetch_version(self, repo, pkg, branch):
         if repo not in self.fchs:
@@ -77,7 +73,8 @@ def repo_tags(repo, pkg_conf):
     return tags
 
 
-def filter_pkg_conf(pkg_conf, package_filter=None, release_filter=None, repo_tag_filter=None):
+def filter_pkg_conf(pkg_conf, package_filter=None, release_filter=None,
+                    repo_tag_filter=None):
     pkgs = pkg_conf['packages']
     if package_filter:
         pkgs = filter(lambda x: re.search(package_filter, x['name']), pkgs)
@@ -106,8 +103,11 @@ def filter_pkg_conf(pkg_conf, package_filter=None, release_filter=None, repo_tag
     pkg_conf['packages'] = pkgs
     return pkg_conf
 
-def fetch_versions(pkg_conf, paths, vers={}, show_commands=False, color=True):
+
+def fetch_versions(pkg_conf, paths, vers=None, show_commands=False, color=True):
     t = _get_term(color)
+    if not vers:
+        vers = {}
     pp = UberPrinter(prefix=t.yellow('[fetch] '))
     pp.puts("Fetching versions of %s packages:" % len(pkg_conf['packages']),
             shift=1)
@@ -122,7 +122,7 @@ def fetch_versions(pkg_conf, paths, vers={}, show_commands=False, color=True):
             pp.puts(rls['name'], shift=1)
             for repo in rls['repos']:
                 repo_name = repo['repo']
-                repo_title = verwatch.util.get_repo_title(pkg_conf, repo_name)
+                repo_title = util.get_repo_title(pkg_conf, repo_name)
                 pp.puts(repo_title, shift=1)
                 if not repo_name in pkgd:
                     pkgd[repo_name] = {}
@@ -142,11 +142,11 @@ def fetch_versions(pkg_conf, paths, vers={}, show_commands=False, color=True):
     return vers
 
 
-def update_versions(pkg_conf, paths, ver_cache_fn, vers={}, show_commands=False,
-                    color=True):
+def update_versions(pkg_conf, paths, ver_cache_fn, vers=None,
+                    show_commands=False, color=True):
     vers = fetch_versions(pkg_conf, paths, vers, show_commands=show_commands,
                           color=color)
-    verwatch.util.mkdir_file(ver_cache_fn)
+    util.mkdir_file(ver_cache_fn)
     json.dump(vers, open(ver_cache_fn, 'wb'))
     return vers
 
@@ -182,7 +182,7 @@ def render_version(ver, max_ver=None, show_error=False, color=True):
         s = t.red(err_msg)
     if 'next' in ver:
         next_ver = ver['next']
-        if not verwatch.util.is_same_version(ver, next_ver):
+        if not util.is_same_version(ver, next_ver):
             s += ' -> ' + render_version(next_ver, max_ver=max_ver, color=color)
     return s
 
@@ -202,11 +202,11 @@ def print_versions(pkg_conf, vers, show_commands=False, color=True):
         pp.puts(t.bold("%s" % pkg_name), shift=1)
         for rls in rlss:
             pp.puts("[%s]" % t.bold(rls['name']), shift=1)
-            max_ver = verwatch.util.release_latest_version(rls, vers, pkg_name)
+            max_ver = util.release_latest_version(rls, vers, pkg_name)
             # print all release versions
             for repo in rls['repos']:
                 repo_name = repo['repo']
-                repo_title = verwatch.util.get_repo_title(pkg_conf, repo_name)
+                repo_title = util.get_repo_title(pkg_conf, repo_name)
                 pp.puts(t.bold(repo_title), shift=1)
                 for branch in repo['branches']:
                     try:

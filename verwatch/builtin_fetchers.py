@@ -1,10 +1,10 @@
-import verwatch.fetchers.bodhi
-import verwatch.fetchers.debug
-import verwatch.fetchers.git
-import verwatch.fetchers.koji
-import verwatch.fetchers.repoquery
+import fetchers.bodhi
+import fetchers.debug
+import fetchers.git
+import fetchers.koji
+import fetchers.repoquery
 try:
-    import verwatch.fetchers.distgit
+    import fetchers.distgit
 except ImportError:
     # TODO: Something more sofisticated would be nice.
     print "Failed to import distgit fetcher. rpm module missing?"

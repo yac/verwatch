@@ -82,7 +82,7 @@ def run(cmd):
                            stderr=subprocess.PIPE)
     out, err = prc.communicate()
     errcode = prc.returncode
-    return (errcode, out.rstrip(), err.rstrip())
+    return errcode, out.rstrip(), err.rstrip()
 
 
 def mkdir_file(file_path):
@@ -93,7 +93,7 @@ def mkdir_file(file_path):
 
 class PlainTerminal(object):
     """
-    Mock of blessings Terminal to provide no formatting.
+    Mock of blessings Terminal to provide no colors
     """
     nullstr = blessings.NullCallableString()
 

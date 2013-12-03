@@ -4,12 +4,11 @@
 # everything yourself in one file. Enjoy!
 #
 
-import verwatch.util
-import verwatch.core
+import util
+import core
 
 
-CSS = \
-"""div.release, div.repo, div.branches { padding: 0; margin: 9px 30px; }
+CSS = """div.release, div.repo, div.branches { padding: 0; margin: 9px 30px; }
 h2.package, h3.release, h4.repo { margin: 0; padding: 0.3em 0 0.2em 8px; }
 
 div.package { margin-bottom: 3em; }
@@ -33,8 +32,7 @@ table.branches td.version { font-weight: bold; padding-left: 0.4em; }
 """
 
 
-PAGE_TEMPLATE="""
-<!DOCTYPE html>
+PAGE_TEMPLATE = """<!DOCTYPE html>
 <html>
 <head>
 <title>%(title)s</title>
@@ -51,6 +49,7 @@ body { padding: 0; margin: 0; }
 </html>
 """
 
+
 def render_version_html(ver, max_ver=None, show_error=False):
     s = ''
     if 'version' in ver:
@@ -63,7 +62,6 @@ def render_version_html(ver, max_ver=None, show_error=False):
         else:
             s += '<span class="ver-old">%s</span>' % v
         if 'release' in ver:
-            r = ver['release']
             s += ('<span class="ver-sep">-</span>'
                   '<span class="ver-release ver-extra">%s</span>'
                   % ver['release'])
@@ -79,7 +77,7 @@ def render_version_html(ver, max_ver=None, show_error=False):
         s += '<span class="ver-error">%s</span>' % err_msg
     if 'next' in ver:
         next_ver = ver['next']
-        if not verwatch.util.is_same_version(ver, next_ver):
+        if not util.is_same_version(ver, next_ver):
             s += ' &nbsp; &rarr; &nbsp; ' + \
                  render_version_html(next_ver, max_ver)
     return s
@@ -101,12 +99,12 @@ def render_versions_html(pkg_conf, vers):
         for rls in rlss:
             html += "<div class=\"release\"><h3 class=\"release\">%s</h3>\n" \
                     % rls['name']
-            max_ver = verwatch.util.release_latest_version(rls, vers, pkg_name)
+            max_ver = util.release_latest_version(rls, vers, pkg_name)
             # print all release versions
             for repo in rls['repos']:
-                tags = verwatch.core.repo_tags(repo, pkg_conf)
+                tags = core.repo_tags(repo, pkg_conf)
                 repo_name = repo['repo']
-                repo_title = verwatch.util.get_repo_title(pkg_conf, repo_name)
+                repo_title = util.get_repo_title(pkg_conf, repo_name)
                 cls = ["repo"] + map(lambda x: "repo-%s" % x, tags)
                 html += "<div class=\"%s\">\n<h4 class=\"repo\">%s</h4>\n" \
                         % (" ".join(cls), "%s" % repo_title)
@@ -127,14 +125,15 @@ def render_versions_html(pkg_conf, vers):
     return html
 
 
-def render_versions_html_page(pkg_conf, vers, title="verwatch versions", css=None, tag_filter=None):
+def render_versions_html_page(pkg_conf, vers, title="verwatch versions",
+                              css=None):
     if css:
         _css = "%s\n%s" % (css, CSS)
     else:
         _css = CSS
     page = PAGE_TEMPLATE % {
-           'css': _css,
-           'body': render_versions_html(pkg_conf, vers, tag_filter=tag_filter),
-           'title': title
-           }
+        'css': _css,
+        'body': render_versions_html(pkg_conf, vers),
+        'title': title
+    }
     return page

@@ -1,12 +1,15 @@
 # -*- encoding: utf-8 -*-
-import verwatch.core
-import verwatch.conf
-import verwatch.fetch
-import verwatch.html
+import core
+import conf
+import fetch
+import html
+
+
+from docopt import docopt
 import os.path
 
 
-def help(paths):
+def get_help(paths):
     return """
 Usage: verwatch [options] [PACKAGE_REGEX]
 
@@ -41,27 +44,26 @@ Paths:
 Available version fetchers:
   %(fetchers)s
 """ % {
-          'pkgconf': verwatch.conf.DEFAULT_PKGCONF,
-          'pkgconf_fn': paths.get_package_conf_fn('CONF'),
-          'base_dir': paths.base_dir,
-          'pkgconf_dir': paths.pkgconf_dir,
-          'plugins_dir': paths.plugins_dir,
-          'cache_dir': paths.cache_dir,
-          'fetchers': "\n  ".join(sorted(
-                                verwatch.fetch.VersionFetcher.fetchers.keys()))
-      }
-
-from docopt import docopt
+        'pkgconf': conf.DEFAULT_PKGCONF,
+        'pkgconf_fn': paths.get_package_conf_fn('CONF'),
+        'base_dir': paths.base_dir,
+        'pkgconf_dir': paths.pkgconf_dir,
+        'plugins_dir': paths.plugins_dir,
+        'cache_dir': paths.cache_dir,
+        'fetchers': "\n  ".join(sorted(
+            fetch.VersionFetcher.fetchers.keys()))
+    }
 
 
 def main():
-    paths = verwatch.conf.PathsManager()
+    paths = conf.PathsManager()
     # import user plugins
-    verwatch.conf.import_files(paths.plugins_dir)
+    conf.import_files(paths.plugins_dir)
 
-    args = docopt(help(paths), version=verwatch.core.VERSION, help=True)
+    args = docopt(get_help(paths), version=core.VERSION, help=True)
 
     show_cmd = args['--show-commands']
+    color = not args['--no-color']
     update = args['--update'] or args['--update-only']
     if args['--package-conf']:
         pkg_conf_id = args['--package-conf']
@@ -70,33 +72,31 @@ def main():
 
     # get and filter package configuration
     pkg_conf_fn = paths.get_package_conf_fn(pkg_conf_id)
-    pkg_conf = verwatch.conf.get_package_conf(pkg_conf_fn)
-    pkg_conf = verwatch.core.filter_pkg_conf(pkg_conf, args['PACKAGE_REGEX'],
-                                             args['--release'])
+    pkg_conf = conf.get_package_conf(pkg_conf_fn)
+    pkg_conf = core.filter_pkg_conf(pkg_conf, args['PACKAGE_REGEX'],
+                                    args['--release'])
 
     ver_cache_fn = paths.get_version_cache_fn(pkg_conf_id)
 
     if os.path.isfile(ver_cache_fn):
-        vers = verwatch.core.cached_versions(ver_cache_fn)
+        vers = core.cached_versions(ver_cache_fn)
     else:
         vers = {}
         update = True
         print "No version cache, updating."
 
     if update:
-        vers = verwatch.core.update_versions(pkg_conf, paths, ver_cache_fn,
-                                             vers, show_commands=show_cmd,
-                                             color=not args['--no-color'])
+        vers = core.update_versions(pkg_conf, paths, ver_cache_fn, vers,
+                                    show_commands=show_cmd, color=color)
         if args['--update-only']:
             return 0
 
     if args['--html']:
-        print verwatch.html.render_versions_html_page(pkg_conf, vers)
+        print html.render_versions_html_page(pkg_conf, vers)
     elif args['--html-embed']:
-        print verwatch.html.render_versions_html(pkg_conf, vers)
+        print html.render_versions_html(pkg_conf, vers)
     else:
-        verwatch.core.print_versions(pkg_conf, vers, show_commands=show_cmd,
-                                     color=not args['--no-color'])
+        core.print_versions(pkg_conf, vers, show_commands=show_cmd, color=color)
 
 
 if __name__ == '__main__':
