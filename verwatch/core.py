@@ -12,7 +12,15 @@ import blessings
 
 
 VERSION = '0.3'
-T = blessings.Terminal()
+
+TERM = blessings.Terminal()
+TERM_PLAIN = verwatch.util.PlainTerminal()
+
+
+def _get_term(color):
+    if color:
+        return TERM
+    return TERM_PLAIN
 
 
 class FetcherManager(object):
@@ -39,18 +47,24 @@ class FetcherManager(object):
 
 
 class UberPrinter(object):
-    def __init__(self, prefix='', indent_cols=4):
+    def __init__(self, prefix='', indent_cols=4, string_output=False):
         self.prefix = prefix
         self.indent_cols = indent_cols
         self.indent = 0
         self.indent_str = ''
+        self.s = ''
+        self.string_output = string_output
 
     def shift(self, n):
         self.indent += n
         self.indent_str = self.indent * self.indent_cols * ' '
 
     def puts(self, pstr="", shift=0):
-        print "%s%s%s" % (self.prefix, self.indent_str, str(pstr))
+        s = "%s%s%s" % (self.prefix, self.indent_str, str(pstr))
+        if self.string_output:
+            self.s += s
+        else:
+            print(s)
         if shift:
             self.shift(shift)
 
@@ -92,9 +106,9 @@ def filter_pkg_conf(pkg_conf, package_filter=None, release_filter=None, repo_tag
     pkg_conf['packages'] = pkgs
     return pkg_conf
 
-
-def fetch_versions(pkg_conf, paths, vers={}, show_commands=False):
-    pp = UberPrinter(T.yellow('[fetch] '))
+def fetch_versions(pkg_conf, paths, vers={}, show_commands=False, color=True):
+    t = _get_term(color)
+    pp = UberPrinter(prefix=t.yellow('[fetch] '))
     pp.puts("Fetching versions of %s packages:" % len(pkg_conf['packages']),
             shift=1)
     fm = FetcherManager(pkg_conf['repos'], paths)
@@ -118,7 +132,7 @@ def fetch_versions(pkg_conf, paths, vers={}, show_commands=False):
                     if show_commands and 'cmd' in ver:
                         pp.puts('$ %s' % ver['cmd'])
                     repod[branch] = ver
-                    ver_str = render_version(ver, show_error=True)
+                    ver_str = render_version(ver, show_error=True, color=color)
                     pp.puts("%s: %s" % (branch, ver_str))
                 pp.shift(-1)
             pp.shift(-1)
@@ -128,8 +142,10 @@ def fetch_versions(pkg_conf, paths, vers={}, show_commands=False):
     return vers
 
 
-def update_versions(pkg_conf, paths, ver_cache_fn, vers={}, show_cmd=False):
-    vers = fetch_versions(pkg_conf, paths, vers, show_cmd)
+def update_versions(pkg_conf, paths, ver_cache_fn, vers={}, show_commands=False,
+                    color=True):
+    vers = fetch_versions(pkg_conf, paths, vers, show_commands=show_commands,
+                          color=color)
     verwatch.util.mkdir_file(ver_cache_fn)
     json.dump(vers, open(ver_cache_fn, 'wb'))
     return vers
@@ -139,20 +155,21 @@ def cached_versions(ver_cache_fn):
     return json.load(open(ver_cache_fn, 'rb'))
 
 
-def render_version(ver, max_ver=None, show_error=False):
+def render_version(ver, max_ver=None, show_error=False, color=True):
+    t = _get_term(color)
     s = ''
     if 'version' in ver:
         if 'epoch' in ver:
             e = str(ver['epoch'])
-            s += T.cyan(e) + T.bold_black(':')
+            s += t.cyan(e) + t.bold_black(':')
         v = ver['version']
         if max_ver and v == max_ver:
-            s += T.green(v)
+            s += t.green(v)
         else:
-            s += T.yellow(v)
+            s += t.yellow(v)
         if 'release' in ver:
             r = ver['release']
-            s += T.bold_black('-') + T.cyan(r)
+            s += t.bold_black('-') + t.cyan(r)
     else:
         if show_error:
             try:
@@ -162,15 +179,16 @@ def render_version(ver, max_ver=None, show_error=False):
                            "error. Fetcher bug!")
         else:
             err_msg = '!!'
-        s = T.red(err_msg)
+        s = t.red(err_msg)
     if 'next' in ver:
         next_ver = ver['next']
         if not verwatch.util.is_same_version(ver, next_ver):
-            s += ' -> ' + render_version(next_ver, max_ver)
+            s += ' -> ' + render_version(next_ver, max_ver=max_ver, color=color)
     return s
 
 
-def print_versions(pkg_conf, vers, show_commands=False):
+def print_versions(pkg_conf, vers, show_commands=False, color=True):
+    t = _get_term(color)
     pp = UberPrinter()
     first = True
     pkgs = pkg_conf['packages']
@@ -181,21 +199,22 @@ def print_versions(pkg_conf, vers, show_commands=False):
             first = False
         else:
             pp.puts("")
-        pp.puts(T.bold("%s" % pkg_name), shift=1)
+        pp.puts(t.bold("%s" % pkg_name), shift=1)
         for rls in rlss:
-            pp.puts("[%s]" % T.bold(rls['name']), shift=1)
+            pp.puts("[%s]" % t.bold(rls['name']), shift=1)
             max_ver = verwatch.util.release_latest_version(rls, vers, pkg_name)
             # print all release versions
             for repo in rls['repos']:
                 repo_name = repo['repo']
                 repo_title = verwatch.util.get_repo_title(pkg_conf, repo_name)
-                pp.puts(T.bold(repo_title), shift=1)
+                pp.puts(t.bold(repo_title), shift=1)
                 for branch in repo['branches']:
                     try:
                         ver = vers[pkg_name][repo_name][branch]
-                        ver_str = render_version(ver, max_ver)
+                        ver_str = render_version(ver,
+                                                 color=color, max_ver=max_ver)
                     except KeyError:
-                        ver_str = T.yellow('??')
+                        ver_str = t.yellow('??')
                     if show_commands and 'cmd' in ver:
                         pp.puts("$ %s" % ver['cmd'])
                     pp.puts("%s: %s" % (branch, ver_str))

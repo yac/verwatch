@@ -1,3 +1,4 @@
+import blessings
 import subprocess
 import os
 import re
@@ -88,3 +89,14 @@ def mkdir_file(file_path):
     dir_path = os.path.dirname(file_path)
     if not os.path.isdir(dir_path):
         os.makedirs(dir_path)
+
+
+class PlainTerminal(object):
+    """
+    Mock of blessings Terminal to provide no formatting.
+    """
+    nullstr = blessings.NullCallableString()
+
+    def __getattr__(self, attr):
+        setattr(self, attr, self.nullstr)
+        return self.nullstr

@@ -28,6 +28,7 @@ Options:
   -c --show-commands            Show commands used to obtain versions.
   -H --html                     Output standalone styled HTML page.
   --html-embed                  Output raw embeddable HTML.
+  --no-color                    Don't use colors in terminal output.
   --version                     Print verwatch version and exit.
   -h --help                     Print this help and exit.
 
@@ -84,7 +85,8 @@ def main():
 
     if update:
         vers = verwatch.core.update_versions(pkg_conf, paths, ver_cache_fn,
-                                             vers, show_cmd)
+                                             vers, show_commands=show_cmd,
+                                             color=not args['--no-color'])
         if args['--update-only']:
             return 0
 
@@ -93,7 +95,8 @@ def main():
     elif args['--html-embed']:
         print verwatch.html.render_versions_html(pkg_conf, vers)
     else:
-        verwatch.core.print_versions(pkg_conf, vers, show_cmd)
+        verwatch.core.print_versions(pkg_conf, vers, show_commands=show_cmd,
+                                     color=not args['--no-color'])
 
 
 if __name__ == '__main__':
