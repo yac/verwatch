@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
 import core
 import conf
+import copy
 import fetch
 import html
 
@@ -25,9 +26,9 @@ Options:
                                 Maps to: %(pkgconf_fn)s
   -r REGEX --release=REGEX      Only releases matching regular expression REGEX
                                 will be listed/updated.
-  -u --update                   Update package version cache before listing
-                                versions.
-  -U --update-only              Update package version cache and exit.
+  -u --update                   Update version cache before listing versions.
+  -U --update-only              Update version cache and exit.
+  -d --update-diff              Update version cache and print version changes.
   -c --show-commands            Show commands used to obtain versions.
   -H --html                     Output standalone styled HTML page.
   --html-embed                  Output raw embeddable HTML.
@@ -64,7 +65,8 @@ def main():
 
     show_cmd = args['--show-commands']
     color = not args['--no-color']
-    update = args['--update'] or args['--update-only']
+    update = args['--update'] or args['--update-only'] or args['--update-diff']
+    update_diff = args['--update-diff']
     if args['--package-conf']:
         pkg_conf_id = args['--package-conf']
     else:
@@ -86,10 +88,15 @@ def main():
         print "No version cache, updating."
 
     if update:
+        if update_diff:
+            old_vers = copy.deepcopy(vers)
         vers = core.update_versions(pkg_conf, paths, ver_cache_fn, vers,
                                     show_commands=show_cmd, color=color)
         if args['--update-only']:
             return 0
+        if update_diff:
+            vers = core.diff_versions(old_vers, vers)
+            pkg_conf = core.filter_pkg_conf_existing_only(pkg_conf, vers)
 
     if args['--html']:
         print html.render_versions_html_page(pkg_conf, vers)

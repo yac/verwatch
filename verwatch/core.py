@@ -8,7 +8,7 @@ import json
 import blessings
 
 
-VERSION = '0.3'
+VERSION = '0.4'
 
 TERM = blessings.Terminal()
 TERM_PLAIN = util.PlainTerminal()
@@ -58,7 +58,7 @@ class UberPrinter(object):
     def puts(self, pstr="", shift=0):
         s = "%s%s%s" % (self.prefix, self.indent_str, str(pstr))
         if self.string_output:
-            self.s += s
+            self.s += s + '\n'
         else:
             print(s)
         if shift:
@@ -100,6 +100,39 @@ def filter_pkg_conf(pkg_conf, package_filter=None, release_filter=None,
                 rls['repos'] = filter(_match_tag_filter, rls['repos'])
             pkg['releases'] = [e for e in rlss if e['repos']]
         pkgs = [e for e in pkgs if e['releases']]
+    pkg_conf['packages'] = pkgs
+    return pkg_conf
+
+
+def filter_pkg_conf_existing_only(pkg_conf, vers):
+    pkgs = pkg_conf['packages']
+    for pkg in pkgs:
+        pkg_name = pkg['name']
+        rlss = pkg['releases']
+        for rls in rlss:
+            repos = rls['repos']
+            for repo in repos:
+                repo_name = repo['repo']
+
+                def _version_available(branch):
+                    # one-liner using try..except is too slow for this :(
+                    if pkg_name not in vers:
+                        return False
+                    pkg_ = vers[pkg_name]
+                    if repo_name not in pkg_:
+                        return False
+                    repo_ = pkg_[repo_name]
+                    if branch not in repo_:
+                        return False
+                    ver_ = repo_[branch]
+                    if not ('version' in ver_ or 'next' in ver_):
+                        return False
+                    return True
+
+                repo['branches'] = filter(_version_available, repo['branches'])
+            rls['repos'] = [e for e in repos if e['branches']]
+        pkg['releases'] = [e for e in rlss if e['repos']]
+    pkgs = [e for e in pkgs if e['releases']]
     pkg_conf['packages'] = pkgs
     return pkg_conf
 
@@ -184,12 +217,17 @@ def render_version(ver, max_ver=None, show_error=False, color=True):
         next_ver = ver['next']
         if not util.is_same_version(ver, next_ver):
             s += ' -> ' + render_version(next_ver, max_ver=max_ver, color=color)
+    if 'was' in ver:
+        was_ver = ver['was']
+        s += '  (was: %s)' % render_version(was_ver, max_ver=max_ver,
+                                            color=color)
     return s
 
 
-def print_versions(pkg_conf, vers, show_commands=False, color=True):
+def print_versions(pkg_conf, vers, show_commands=False, color=True,
+                   string_output=False):
     t = _get_term(color)
-    pp = UberPrinter()
+    pp = UberPrinter(string_output=string_output)
     first = True
     pkgs = pkg_conf['packages']
     for pkg in pkgs:
@@ -222,15 +260,19 @@ def print_versions(pkg_conf, vers, show_commands=False, color=True):
             pp.shift(-1)
         pp.shift(-1)
     pp.shift(-1)
-    return vers
+    if string_output:
+        return pp.s
+
+
+def dget(d, key):
+    # I don't know howto make nested defaultdict, thus this uglyness
+    if key not in d:
+        d[key] = {}
+    return d[key]
 
 
 def _insert_new_version(diff, pkg_name, repo_name, branch_name, new_version,
                         old_version):
-    def dget(d, key):
-        if key not in d:
-            d[key] = {}
-        return d[key]
     repo = dget(dget(diff, pkg_name), repo_name)
     diff_version = new_version.copy()
     if old_version:
