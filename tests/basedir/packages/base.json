@@ -1,0 +1,81 @@
+{
+    "repos": {
+        "ver": {
+            "fetcher": "debug",
+            "title": "Constant Version",
+            "options": {
+                "version": "1.0"
+            }
+        },
+        "next": {
+            "fetcher": "debug",
+            "title": "Constant Next Version",
+            "options": {
+                "next": "1.1"
+            },
+            "tags": ["important"]
+        },
+        "both": {
+            "fetcher": "debug",
+            "title": "Constant Next Version",
+            "options": {
+                "version": "1.0",
+                "next": "1.1"
+            },
+            "tags": ["important"]
+        },
+        "err": {
+            "fetcher": "debug",
+            "title": "Error Only"
+        }
+    },
+    "packages": [
+        {
+            "names": ["foo", "bar"],
+            "releases": [
+                {
+                    "name": "release-banana",
+                    "repos": [
+                        {
+                            "repo": "ver",
+                            "branches": [ "v1", "v2" ]
+                        },
+                        {
+                            "repo": "next",
+                            "branches": [ "v1", "v2" ]
+                        },
+                        {
+                            "repo": "both",
+                            "branches": [ "v1", "v2" ]
+                        },
+                        {
+                            "repo": "err",
+                            "branches": [ "v1", "v2" ]
+                        }
+                    ]
+                },
+                {
+                    "name": "release-grape",
+                    "repos": [
+                        {
+                            "repo": "ver",
+                            "branches": [ "v1", "v2" ]
+                        },
+                        {
+                            "repo": "next",
+                            "branches": [ "v1", "v2" ]
+                        },
+                        {
+                            "repo": "both",
+                            "branches": [ "v1", "v2" ]
+                        },
+                        {
+                            "repo": "err",
+                            "branches": [ "v1", "v2" ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

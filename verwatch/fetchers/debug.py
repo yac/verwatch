@@ -10,15 +10,13 @@ class DebugFetcher(VersionFetcher):
 
     def __init__(self, **kwargs):
         super(DebugFetcher, self).__init__(**kwargs)
-        if 'options' not in kwargs:
-            raise ValueError("options argument not supplied to debug "
-                             "fetcher. 'version' option is required.")
         if 'paths' not in kwargs:
             raise ValueError("paths argument not supplied to debug "
                              "fetcher.")
-        options = kwargs['options']
+        options = kwargs.get('options', {})
         self.paths = kwargs['paths']
         self.version = options.get('version')
+        self.error = options.get('error', 'version not set')
         self.next = options.get('next')
         # bumping
         self.bump_version_path = None
@@ -69,7 +67,7 @@ class DebugFetcher(VersionFetcher):
                                               self.bump_version_path)
             ver['version'] = self.version
         else:
-            ver['error'] = 'version not set'
+            ver['error'] = self.error
         if self.next:
             self.next = self._bump_version(self.next, self.bump_next_path)
             ver['next'] = {'version': self.next}

@@ -137,11 +137,12 @@ def filter_pkg_conf_existing_only(pkg_conf, vers):
     return pkg_conf
 
 
-def fetch_versions(pkg_conf, paths, vers=None, show_commands=False, color=True):
+def fetch_versions(pkg_conf, paths, vers=None,
+                   quiet=False, show_commands=False, color=True):
     t = _get_term(color)
     if not vers:
         vers = {}
-    pp = UberPrinter(prefix=t.yellow('[fetch] '))
+    pp = UberPrinter(prefix=t.yellow('[fetch] '), string_output=quiet)
     pp.puts("Fetching versions of %s packages:" % len(pkg_conf['packages']),
             shift=1)
     fm = FetcherManager(pkg_conf['repos'], paths)
@@ -280,6 +281,14 @@ def _insert_new_version(diff, pkg_name, repo_name, branch_name, new_version,
     repo[branch_name] = diff_version
 
 
+def _version_differs(a, b):
+    if a == b:
+        return False
+    if a.keys() == ['error'] and b.keys() == ['error']:
+        # error message change doesn't count as change
+        return False
+    return True
+
 def diff_versions(old_vers, new_vers):
     diff = {}
     for pkg_name, new_repos in new_vers.items():
@@ -288,7 +297,7 @@ def diff_versions(old_vers, new_vers):
             old_branches = old_repos.get(repo_name, {})
             for branch_name, new_version in new_branches.items():
                 old_version = old_branches.get(branch_name, {})
-                if new_version != old_version:
+                if _version_differs(new_version, old_version):
                     _insert_new_version(diff, pkg_name, repo_name,
                                         branch_name, new_version, old_version)
     return diff

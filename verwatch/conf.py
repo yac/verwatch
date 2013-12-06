@@ -8,15 +8,18 @@ DEFAULT_PKGCONF = "default"
 
 
 class PathsManager(object):
-    def __init__(self, base_dir=None):
+    def __init__(self, base_dir=None, cache_dir=None):
         if base_dir:
             self.base_dir = base_dir
         else:
             self.base_dir = "%s/.verwatch" % os.environ['HOME']
+        if cache_dir:
+            self.cache_dir = cache_dir
+        else:
+            cache_dir = "%s/cache" % base_dir
+        self.version_cache_dir = "%s/versions" % self.cache_dir
         self.pkgconf_dir = "%s/packages" % self.base_dir
         self.plugins_dir = "%s/plugins" % self.base_dir
-        self.cache_dir = "%s/cache" % self.base_dir
-        self.version_cache_dir = "%s/versions" % self.cache_dir
 
     def get_package_conf_fn(self, conf=None):
         if not conf:
