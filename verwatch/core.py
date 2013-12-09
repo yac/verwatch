@@ -125,15 +125,12 @@ def filter_pkg_conf_existing_only(pkg_conf, vers):
                     if branch not in repo_:
                         return False
                     ver_ = repo_[branch]
-                    if not ('version' in ver_ or 'next' in ver_):
-                        return False
                     return True
 
                 repo['branches'] = filter(_version_available, repo['branches'])
             rls['repos'] = [e for e in repos if e['branches']]
         pkg['releases'] = [e for e in rlss if e['repos']]
     pkgs = [e for e in pkgs if e['releases']]
-    pkg_conf['packages'] = pkgs
     return pkg_conf
 
 
@@ -288,6 +285,7 @@ def _version_differs(a, b):
         # error message change doesn't count as change
         return False
     return True
+
 
 def diff_versions(old_vers, new_vers):
     diff = {}
