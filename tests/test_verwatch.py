@@ -50,15 +50,6 @@ def test_update(vers):
     assert vers['bar']['err']['v2'] == {'error': err_msg}
 
 
-def test_diff_no_change(vers):
-    old_vers = copy.deepcopy(vers)
-    same_vers = copy.deepcopy(vers)
-    vers_diff = verwatch.core.diff_versions(old_vers, same_vers)
-    assert vers_diff == {}
-    assert old_vers == vers
-    assert same_vers == vers
-
-
 def test_diff(vers):
     new_vers = copy.deepcopy(vers)
     err_msg = vers['foo']['next']['v2']['error']
@@ -91,9 +82,18 @@ def test_diff(vers):
     assert vers_diff == vers_good, "there are extra items in the version diff"
 
 
+def test_diff_no_change(vers):
+    old_vers = copy.deepcopy(vers)
+    same_vers = copy.deepcopy(vers)
+    vers_diff = verwatch.core.diff_versions(old_vers, same_vers)
+    assert vers_diff == {}
+    assert old_vers == vers
+    assert same_vers == vers
+
+
 def test_pkg_conf_filter_existing(pkg_conf, vers):
     new_vers = copy.deepcopy(vers)
-    new_vers['bar']['next']['v2']['error'] = 'lolz'
+    new_vers['bar']['next']['v2']['version'] = '9000'
     vers_diff = verwatch.core.diff_versions(vers, new_vers)
     filtered_pkg_conf = verwatch.core.filter_pkg_conf_existing_only(
         copy.deepcopy(pkg_conf), vers_diff)
@@ -114,3 +114,10 @@ def test_pkg_conf_filter_existing(pkg_conf, vers):
         }
     ]
 
+def test_pkg_conf_filter_existing_error_change(pkg_conf, vers):
+    new_vers = copy.deepcopy(vers)
+    new_vers['bar']['next']['v2']['error'] = 'lol error'
+    vers_diff = verwatch.core.diff_versions(vers, new_vers)
+    filtered_pkg_conf = verwatch.core.filter_pkg_conf_existing_only(
+        copy.deepcopy(pkg_conf), vers_diff)
+    assert filtered_pkg_conf['packages'] == []

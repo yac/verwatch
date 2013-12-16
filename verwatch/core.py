@@ -281,9 +281,8 @@ def _insert_new_version(diff, pkg_name, repo_name, branch_name, new_version,
 def _version_differs(a, b):
     if a == b:
         return False
-    if a.keys() == ['error'] and b.keys() == ['error']:
-        # error message change doesn't count as change
-        return False
+    if a.get('version') == b.get('version'):
+        return _version_differs(a.get('next', {}), b.get('next', {}))
     return True
 
 
