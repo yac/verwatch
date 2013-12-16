@@ -27,6 +27,7 @@ WHAT CAN IT DO
  * filter listed/updated packages and releases using regexp
    (easy selective update)
  * easily write, plug in and contribute custom version fetchers
+ * give false feeling of safety during development with few unit tests
 
 
 WHAT MIGHT BE DONE IN FUTURE
@@ -34,7 +35,6 @@ WHAT MIGHT BE DONE IN FUTURE
 
  * better documentation?
  * automatic update on old cache?
- * tests?
 
 
 REQUIREMENTS
@@ -42,8 +42,11 @@ REQUIREMENTS
 
 Following `python` packages are required:
 
+ * `blessings` for terminal colors
  * `docopt` for beautiful option parsing
- * `blessings` for funky colors
+
+In case above list isn't up to date, [requirements.txt](requirements.txt)
+should be.
 
 I hacked it up on python 2.7.
 
@@ -102,3 +105,15 @@ Long story short:
 
 To use your shiny new fetcher, just reference it in package configuration by
 its `name`.
+
+
+TESTS
+-----
+
+There are unit tests in case you'd like to hack verwatch.
+
+You'll need `py.test`. Run it in top verwatch directory:
+
+    py.test
+
+Or run `./run_tests.sh` script which does exactly that.

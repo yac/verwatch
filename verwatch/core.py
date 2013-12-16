@@ -8,7 +8,7 @@ import json
 import blessings
 
 
-VERSION = '0.4'
+VERSION = '0.5'
 
 TERM = blessings.Terminal()
 TERM_PLAIN = util.PlainTerminal()
