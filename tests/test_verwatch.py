@@ -26,10 +26,16 @@ def setup_module(module):
 
 
 @pytest.fixture
-def vers():
+def pkg_conf():
     pkg_conf_fn = PATHS.get_package_conf_fn('base')
-    pkg_conf = verwatch.conf.get_package_conf(pkg_conf_fn)
-    vers_ = verwatch.core.fetch_versions(pkg_conf, PATHS, vers={}, quiet=True)
+    pkg_conf_ = verwatch.conf.get_package_conf(pkg_conf_fn)
+    return pkg_conf_
+
+
+@pytest.fixture
+def vers():
+    vers_ = verwatch.core.fetch_versions(pkg_conf(), PATHS, vers={},
+                                         quiet=True)
     return vers_
 
 
@@ -83,3 +89,17 @@ def test_diff(vers):
     vers_good = {'foo': {'ver': {'v1': ver_ver}, 'next': {'v2': ver_next}},
                  'bar': {'both': {'v1': ver_both}}}
     assert vers_diff == vers_good, "there are extra items in the version diff"
+
+
+def test_pkg_conf_filter_existing(pkg_conf, vers):
+    new_vers = copy.deepcopy(vers)
+    new_vers['bar']['next']['v2']['error'] = 'lolz'
+    vers_diff = verwatch.core.diff_versions(vers, new_vers)
+    filtered_pkg_conf = verwatch.core.filter_pkg_conf_existing_only(
+        copy.deepcopy(pkg_conf), vers_diff)
+    print json.dumps(vers_diff, indent=2)
+    print json.dumps(filtered_pkg_conf['packages'], indent=2)
+    assert filtered_pkg_conf['packages'] == [
+        {'name': 'foo', 'releases': []}
+    ]
+

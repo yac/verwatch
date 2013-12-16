@@ -16,7 +16,7 @@ class PathsManager(object):
         if cache_dir:
             self.cache_dir = cache_dir
         else:
-            cache_dir = "%s/cache" % base_dir
+            self.cache_dir = "%s/cache" % self.base_dir
         self.version_cache_dir = "%s/versions" % self.cache_dir
         self.pkgconf_dir = "%s/packages" % self.base_dir
         self.plugins_dir = "%s/plugins" % self.base_dir
