@@ -97,9 +97,20 @@ def test_pkg_conf_filter_existing(pkg_conf, vers):
     vers_diff = verwatch.core.diff_versions(vers, new_vers)
     filtered_pkg_conf = verwatch.core.filter_pkg_conf_existing_only(
         copy.deepcopy(pkg_conf), vers_diff)
-    print json.dumps(vers_diff, indent=2)
-    print json.dumps(filtered_pkg_conf['packages'], indent=2)
-    assert filtered_pkg_conf['packages'] == [
-        {'name': 'foo', 'releases': []}
+    assert filtered_pkg_conf['packages'] == \
+    [
+        {
+            "name": "bar",
+            "releases": [
+                {
+                    "name": "release-banana",
+                    "repos": [{"branches": ["v2"], "repo": "next"}]
+                },
+                {
+                    "name": "release-grape",
+                    "repos": [{"branches": ["v2"], "repo": "next" }]
+                }
+            ]
+        }
     ]
 

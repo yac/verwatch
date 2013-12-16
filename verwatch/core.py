@@ -130,7 +130,7 @@ def filter_pkg_conf_existing_only(pkg_conf, vers):
                 repo['branches'] = filter(_version_available, repo['branches'])
             rls['repos'] = [e for e in repos if e['branches']]
         pkg['releases'] = [e for e in rlss if e['repos']]
-    pkgs = [e for e in pkgs if e['releases']]
+    pkg_conf['packages'] = [e for e in pkgs if e['releases']]
     return pkg_conf
 
 

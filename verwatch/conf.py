@@ -1,3 +1,4 @@
+import copy
 import os
 import json
 import glob
@@ -42,7 +43,7 @@ def get_package_conf(conf_fn):
         pkgs.remove(pkg)
         names = pkg.pop('names')
         for name in reversed(names):
-            npkg = pkg.copy()
+            npkg = copy.deepcopy(pkg)
             npkg['name'] = name
             pkgs.insert(i, npkg)
     return pkg_conf
