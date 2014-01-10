@@ -83,7 +83,7 @@ def render_version_html(ver, max_ver=None, show_error=False):
     return s
 
 
-def render_versions_html(pkg_conf, vers):
+def render_versions_html(pkg_conf, vers, repo_links=True):
     first = True
     pkgs = pkg_conf['packages']
     html = "<div class='versions'>\n"
@@ -105,9 +105,13 @@ def render_versions_html(pkg_conf, vers):
                 tags = core.repo_tags(repo, pkg_conf)
                 repo_name = repo['repo']
                 repo_title = util.get_repo_title(pkg_conf, repo_name)
+                if repo_links:
+                    repo_link = util.get_repo_link(pkg_conf, repo_name)
+                    if repo_link:
+                        repo_title += " <a href=\"%s\">&rarr;</a>" % repo_link
                 cls = ["repo"] + map(lambda x: "repo-%s" % x, tags)
                 html += "<div class=\"%s\">\n<h4 class=\"repo\">%s</h4>\n" \
-                        % (" ".join(cls), "%s" % repo_title)
+                        % (" ".join(cls), repo_title)
                 html += "<table class=\"branches\">\n"
                 for branch in repo['branches']:
                     try:

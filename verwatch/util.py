@@ -44,6 +44,10 @@ def get_repo_title(pkg_conf, repo):
     return pkg_conf["repos"][repo].get("title", repo)
 
 
+def get_repo_link(pkg_conf, repo):
+    return pkg_conf["repos"].get(repo, {}).get("options", {}).get('repo_base')
+
+
 def release_latest_version(rls, vers, pkg_name):
     max_verl = [0, 0, 0]
     for repo in rls['repos']:
