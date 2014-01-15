@@ -1,7 +1,6 @@
 from verwatch.fetch import VersionFetcher
-from verwatch.util import run, is_version
+from verwatch.util import run
 import os
-import re
 
 
 class GitFetcher(VersionFetcher):
@@ -70,9 +69,9 @@ class GitFetcher(VersionFetcher):
                 err_msg = 'git log failed: %s' % err_msg
             ver['error'] = err_msg
             return ver
-        tag = out.rstrip()
-        if tag:
-            ver['version'] = tag
+        v = out.lstrip('v').rstrip()
+        if v:
+            ver['version'] = v
         else:
             ver['error'] = "No git tags found in repo."
         return ver
