@@ -14,7 +14,7 @@ class KojiFetcher(VersionFetcher):
             if 'command' in options:
                 self.command = options['command']
 
-    def _koji_get_version(self, pkg_name, branch):
+    def _get_version(self, pkg_name, branch):
         ver = {}
         cmd = "%s latest-pkg \"%s\" \"%s\"" % (self.command, branch, pkg_name)
         ver['cmd'] = cmd
@@ -39,15 +39,4 @@ class KojiFetcher(VersionFetcher):
             return ver
         nvr = parse_nvr(cols[0], pkg_name)
         ver.update(nvr)
-        return ver
-
-    def _get_version(self, pkg_name, branch):
-        ver = self._koji_get_version(pkg_name, branch)
-        next_branch = "%s-candidate" % branch
-        next_ver = self._koji_get_version(pkg_name, next_branch)
-        if 'version' not in next_ver:
-            next_branch = "%s-updates-candidate" % branch
-            next_ver = self._koji_get_version(pkg_name, next_branch)
-        if 'version' in next_ver:
-            ver['next'] = next_ver
         return ver
