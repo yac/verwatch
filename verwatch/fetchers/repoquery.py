@@ -6,6 +6,10 @@ import hashlib
 class RepoqueryFetcher(VersionFetcher):
     name = 'repoquery'
 
+    # Sometimes, e.g. in multiarch repos you can have dupes (a build
+    # for each arch). squash_dupes can be used to squash them to one
+    squash_dupes = None
+
     def __init__(self, **kwargs):
         VersionFetcher.__init__(self, **kwargs)
         if 'options' not in kwargs:
@@ -20,6 +24,7 @@ class RepoqueryFetcher(VersionFetcher):
                              "fetcher.")
         self.paths = kwargs['paths']
         self.repo_base = options['repo_base']
+        self.squash_dupes = options.get("squash_dupes", self.squash_dupes)
 
     def _get_version(self, pkg_name, branch):
         hsh = hashlib.md5()
@@ -44,9 +49,12 @@ class RepoqueryFetcher(VersionFetcher):
             ver['error'] = "No version found."
             return ver
         lines = out.strip().split("\n")
+        if self.squash_dupes:
+            lines = list(set(lines))
         if len(lines) > 1:
             # TODO: Select best version.
-            msg = "Got more than 1 version using repoquery... FIXME!"
+            msg = ("Got more than 1 version using repoquery... FIXME!: %s"
+                   % lines)
             raise NotImplementedError(msg)
         nvr = parse_nvr(lines[0], pkg_name)
         ver.update(nvr)

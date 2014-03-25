@@ -1,0 +1,110 @@
+{
+    "repos": {
+        "resources/pub/ovirt-node-base-stable/rpm/repo": {
+            "title": "Released ovirt-node on resources.ovirt.org (repo)",
+            "fetcher": "repoquery",
+            "options": {
+                "repo_base": "http://plain.resources.ovirt.org/pub/ovirt-node-base-stable/rpm/"
+            }
+        },
+        "resources/pub/ovirt-node-base-stable/rpm": {
+            "title": "Released ovirt-node on resources.ovirt.org (files)",
+            "fetcher": "cnucnu",
+            "options": {
+                "url_base": "http://plain.resources.ovirt.org/pub/ovirt-node-base-stable/rpm/%(branch)s/noarch/"
+            }
+        },
+        "resources/pub/ovirt-node-base-stable/iso": {
+            "title": "Released ovirt-node ISOs on resources.ovirt.org",
+            "fetcher": "cnucnu",
+            "options": {
+                "url_base": "http://plain.resources.ovirt.org/pub/ovirt-node-base-stable/iso/%(branch)s"
+            }
+        },
+        "resources/3.4.0-rc2/rpm": {
+            "title": "resources/3.4.0-rc2/rpm",
+            "fetcher": "repoquery",
+            "options": {
+                "repo_base": "http://plain.resources.ovirt.org/releases/3.4.0-rc2/rpm/",
+                "squash_dupes": true
+            }
+        },
+        "ovirt-gerrit": {
+            "title": "oVirt Gerrit",
+            "fetcher": "git",
+            "options": {
+                "repo_base": "git://gerrit.ovirt.org/"
+            }
+        }
+    },
+    "packages": [
+        {
+            "names": [
+                "ovirt-node-iso"
+            ],
+            "releases": [
+                {
+                    "name": "stable",
+                    "repos": [
+                        {
+                            "repo": "resources/pub/ovirt-node-base-stable/iso",
+                            "branches": [ "el6" ]
+                        }
+
+                    ]
+                }
+            ]
+        },
+        {
+            "names": [
+                "ovirt-node"
+            ],
+            "releases": [
+                {
+                    "name": "stable",
+                    "repos": [
+                        {
+                            "repo": "resources/pub/ovirt-node-base-stable/rpm",
+                            "branches": [ "el6" ]
+                        },
+                        {
+                            "repo": "resources/pub/ovirt-node-base-stable/rpm/repo",
+                            "branches": [ "el6" ]
+                        },
+                        {
+                            "repo": "resources/3.4.0-rc2/rpm",
+                            "branches": [ "EL/6" ]
+                        },
+                        {
+                            "repo": "ovirt-gerrit",
+                            "branches": [ "node-3.0" ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "names": [
+                "vdsm",
+                "jboss-as",
+                "ovirt-host-deploy"
+            ],
+            "releases": [
+                {
+                    "name": "stable",
+                    "repos": [
+                        {
+                            "repo": "resources/3.4.0-rc2/rpm",
+                            "branches": [ "EL/6", "Fedora/19", "Fedora/20" ]
+                        },
+                        {
+                            "repo": "ovirt-gerrit",
+                            "branches": [ "ovirt-3.4" ]
+                        }
+                    ]
+                }
+            ]
+        }
+
+    ]
+}

@@ -67,7 +67,7 @@ class GitFetcher(VersionFetcher):
                 err_msg = "Branch '%s' doesn't seem to exist." % branch
             else:
                 err_msg = 'git log failed: %s' % err_msg
-            ver['error'] = err_msg
+            ver['error'] = unicode(err_msg, "utf8")
             return ver
         v = out.lstrip('v').rstrip()
         if v:

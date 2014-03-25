@@ -56,7 +56,8 @@ class UberPrinter(object):
         self.indent_str = self.indent * self.indent_cols * ' '
 
     def puts(self, pstr="", shift=0):
-        s = "%s%s%s" % (self.prefix, self.indent_str, str(pstr))
+        pstr = pstr if type(pstr) == unicode else unicode(pstr, "utf8")
+        s = "%s%s%s" % (self.prefix, self.indent_str, pstr)
         if self.string_output:
             self.s += s + '\n'
         else:
