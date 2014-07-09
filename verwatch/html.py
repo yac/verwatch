@@ -19,8 +19,10 @@ h3.release { font-size: 24px; color: #086FA1; }
 
 h4.repo { font-size: 18px; color: #04819E; }
 
+code { font-weight: normal }
+
 table.branches { margin-left: 30px; }
-table.branches td { padding: 0 0.5em 0.2em; }
+table.branches td { padding: 0 0.5em 0.2em; vertical-align: top; }
 table.branches td.branch { font-weight: bold; text-align: right; }
 table.branches td.version { font-weight: bold; padding-left: 0.4em; }
 
@@ -83,7 +85,7 @@ def render_version_html(ver, max_ver=None, show_error=False):
     return s
 
 
-def render_versions_html(pkg_conf, vers, repo_links=True):
+def render_versions_html(pkg_conf, vers, repo_links=True, show_commands=False):
     first = True
     pkgs = pkg_conf['packages']
     html = "<div class='versions'>\n"
@@ -117,6 +119,8 @@ def render_versions_html(pkg_conf, vers, repo_links=True):
                     try:
                         ver = vers[pkg_name][repo_name][branch]
                         ver_str = render_version_html(ver, max_ver)
+                        if show_commands and 'cmd' in ver:
+                            ver_str += '<br><code>$ %s</code>' % ver['cmd']
                     except KeyError:
                         ver_str = '<span class="ver-unknown">??</span>'
                     html += ("<tr><td class=\"branch\">%s:</td>"
