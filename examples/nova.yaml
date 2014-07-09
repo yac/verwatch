@@ -1,0 +1,45 @@
+packages:
+- name: nova
+  releases:
+  - name: folsom
+    repos:
+    - branches: [stable/folsom]
+      repo: openstack
+    - branches: [f18-patches]
+      repo: redhat-openstack
+    - branches: [f18-updates, dist-6E-epel]
+      repo: bodhi
+    - branches: [f18, dist-6E-epel]
+      repo: koji
+  - name: grizzly
+    repos:
+    - branches: [stable/grizzly]
+      repo: openstack
+    - branches: [f19-patches]
+      repo: redhat-openstack
+    - branches: [fedora-18, fedora-19, epel-6]
+      repo: RDO grizzly
+    - branches: [f19, f20]
+      repo: koji
+repos:
+  RDO grizzly:
+    alter_pkg_name: {prefix: openstack-}
+    fetcher: repoquery
+    options: {repo_base: 'http://repos.fedorapeople.org/repos/openstack/openstack-grizzly/'}
+    title: RDO
+  bodhi:
+    alter_pkg_name: {prefix: openstack-}
+    fetcher: bodhi
+    title: Fedora updates (bodhi)
+  koji:
+    alter_pkg_name: {prefix: openstack-}
+    fetcher: koji
+    title: Fedora builds (koji)
+  openstack:
+    fetcher: git
+    options: {repo_base: 'https://github.com/openstack/'}
+    title: openstack @ github.com
+  redhat-openstack:
+    fetcher: git
+    options: {repo_base: 'https://github.com/redhat-openstack/'}
+    title: redhat-openstack @ github.com

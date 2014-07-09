@@ -1,0 +1,28 @@
+packages:
+- name: python-novaclient
+  releases:
+  - name: folsom
+    repos:
+    - branches: [stable/folsom]
+      repo: redhat-openstack
+  - name: upstream
+    repos:
+    - branches: [master]
+      repo: openstack
+- name: python-glanceclient
+  releases:
+  - name: folsom
+    repos:
+    - branches: [stable/folsom]
+      repo: redhat-openstack
+  - name: upstream
+    repos:
+    - branches: [master]
+      repo: openstack
+repos:
+  openstack:
+    fetcher: git
+    options: {repo_base: 'https://github.com/openstack/'}
+  redhat-openstack:
+    fetcher: git
+    options: {repo_base: 'https://github.com/redhat-openstack/'}

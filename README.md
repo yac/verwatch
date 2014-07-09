@@ -66,7 +66,7 @@ There is `verw` CLI frontend. Some use cases:
 
  * `verw` :  lists versions for default packages.
  * `verw -u` :  updates and shows versions for default packages.
- * `verw -p clients` :  use `~/.verwatch/packages/clients.json` package config.
+ * `verw -p clients` :  use `~/.verwatch/packages/clients.yaml` package config.
  * `verw 'nova|cinder'` :  show versions of packages matching supplied regex.
  * `verw -U -r 'grizzly' 'nova|cinder'` :  update versions/releases of packages
    matching supplied regexes and exit.
@@ -84,9 +84,9 @@ QUICKSTART
     cd verwatch
     sudo python setup.py install
     mkdir -p ~/.verwatch/packages
-    cp examples/nova.json ~/.verwatch/packages
+    cp examples/nova.yaml ~/.verwatch/packages
     cd ~/.verwatch/packages
-    ln -s nova.json default.json
+    ln -s nova.yaml default.yaml
     verw
 
 

@@ -1,0 +1,16 @@
+packages:
+- name: openstack-nova
+  releases:
+  - name: grizzly
+    repos:
+    - branches: [el6-grizzly, f19]
+      repo: fedora dist
+  - name: havana
+    repos:
+    - branches: [el6-havana]
+      repo: fedora dist
+repos:
+  fedora dist:
+    fetcher: distgit
+    options: {repo_base: 'git://pkgs.fedoraproject.org/'}
+    title: Fedora dist-git @ pkgs.fedoraproject.org

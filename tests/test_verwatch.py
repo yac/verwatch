@@ -2,7 +2,6 @@ import verwatch.core
 import verwatch.conf
 
 import copy
-import json
 import os
 import pytest
 import shutil

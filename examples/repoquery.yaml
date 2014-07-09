@@ -1,0 +1,11 @@
+packages:
+- name: python-novaclient
+  releases:
+  - name: grizzly
+    repos:
+    - branches: [fedora-17, fedora-18, epel-6]
+      repo: RHOS side repo
+repos:
+  RHOS side repo:
+    fetcher: repoquery
+    options: {repo_base: 'http://repos.fedorapeople.org/repos/openstack/openstack-grizzly/'}

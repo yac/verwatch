@@ -1,0 +1,9 @@
+packages:
+- name: python-novaclient
+  releases:
+  - name: folsom
+    repos:
+    - branches: [f18-updates, dist-6E-epel]
+      repo: fedora updates
+repos:
+  fedora updates: {fetcher: bodhi}

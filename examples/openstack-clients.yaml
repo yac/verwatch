@@ -1,0 +1,95 @@
+packages:
+- names: [python-novaclient, python-keystoneclient, python-glanceclient, python-cinderclient,
+    python-quantumclient]
+  releases:
+  - name: folsom
+    repos:
+    - branches: [stable/folsom]
+      repo: redhat-openstack
+    - branches: [f18-updates, dist-6E-epel]
+      repo: bodhi
+    - branches: [f18, dist-6E-epel]
+      repo: koji
+    - branches: [rh-folsom-rhel-6]
+      repo: brew
+  - name: grizzly
+    repos:
+    - branches: [stable/grizzly]
+      repo: redhat-openstack
+    - branches: [fedora-18, fedora-19, epel-6]
+      repo: RDO grizzly
+    - branches: [f19, f20]
+      repo: koji
+    - branches: [rh-grizzly-rhel-6]
+      repo: brew
+    - branches: [f19, master, el6]
+      repo: fedora dist
+  - name: upstream
+    repos:
+    - branches: [master]
+      repo: openstack
+- name: python-swiftclient
+  releases:
+  - name: folsom
+    repos:
+    - branches: [f18-updates, dist-6E-epel]
+      repo: bodhi
+    - branches: [f18, dist-6E-epel]
+      repo: koji
+    - branches: [rh-folsom-rhel-6]
+      repo: brew
+  - name: grizzly
+    repos:
+    - branches: [fedora-18, fedora-19, epel-6]
+      repo: RDO grizzly
+    - branches: [f19, f20]
+      repo: koji
+    - branches: [rh-grizzly-rhel-6]
+      repo: brew
+    - branches: [f19, master, el6]
+      repo: fedora dist
+  - name: upstream
+    repos:
+    - branches: [master]
+      repo: openstack
+- name: python-ceilometerclient
+  releases:
+  - name: grizzly
+    repos:
+    - branches: [stable/grizzly]
+      repo: redhat-openstack
+    - branches: [fedora-18, fedora-19, epel-6]
+      repo: RDO grizzly
+    - branches: [f19, f20]
+      repo: koji
+    - branches: [rh-grizzly-rhel-6]
+      repo: brew
+    - branches: [f19, master, el6]
+      repo: fedora dist
+  - name: upstream
+    repos:
+    - branches: [master]
+      repo: openstack
+repos:
+  RDO grizzly:
+    fetcher: repoquery
+    options: {repo_base: 'http://repos.fedorapeople.org/repos/openstack/openstack-grizzly'}
+    title: RDO
+  bodhi: {fetcher: bodhi, title: Fedora updates (bodhi)}
+  brew:
+    fetcher: koji
+    options: {command: brew}
+    title: RHOS builds (brew)
+  fedora dist:
+    fetcher: distgit
+    options: {repo_base: 'git://pkgs.fedoraproject.org/'}
+    title: Fedora dist-git @ pkgs.fedoraproject.org
+  koji: {fetcher: koji, title: Fedora builds (koji)}
+  openstack:
+    fetcher: git
+    options: {repo_base: 'https://github.com/openstack/'}
+    title: openstack @ github.com
+  redhat-openstack:
+    fetcher: git
+    options: {repo_base: 'https://github.com/redhat-openstack/'}
+    title: redhat-openstack @ github.com

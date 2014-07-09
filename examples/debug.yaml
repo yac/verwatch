@@ -1,0 +1,44 @@
+packages:
+- name: foo
+  releases:
+  - name: stable version
+    repos:
+    - branches: [banana]
+      repo: const-ver
+    - branches: [banana]
+      repo: const-next
+    - branches: [banana]
+      repo: const-both
+  - name: changing version
+    repos:
+    - branches: [banana]
+      repo: bump-ver
+    - branches: [banana]
+      repo: bump-next
+    - branches: [banana]
+      repo: bump-both
+repos:
+  bump-both:
+    fetcher: debug
+    options: {bump: both, next: '0.2', version: '0.1'}
+    title: Increment Both
+  bump-next:
+    fetcher: debug
+    options: {bump: next, next: '0.2'}
+    title: Increment Next Version
+  bump-ver:
+    fetcher: debug
+    options: {bump: version, version: '0.1'}
+    title: Increment Version
+  const-both:
+    fetcher: debug
+    options: {next: '1.1', version: '1.0'}
+    title: Constant Next Version
+  const-next:
+    fetcher: debug
+    options: {next: '1.1'}
+    title: Constant Next Version
+  const-ver:
+    fetcher: debug
+    options: {version: '1.0'}
+    title: Constant Version

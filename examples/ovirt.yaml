@@ -1,0 +1,49 @@
+packages:
+- names: [ovirt-node-iso]
+  releases:
+  - name: stable
+    repos:
+    - branches: [el6]
+      repo: resources/pub/ovirt-node-base-stable/iso
+- names: [ovirt-node]
+  releases:
+  - name: stable
+    repos:
+    - branches: [el6]
+      repo: resources/pub/ovirt-node-base-stable/rpm
+    - branches: [el6]
+      repo: resources/pub/ovirt-node-base-stable/rpm/repo
+    - branches: [EL/6]
+      repo: resources/3.4.0-rc2/rpm
+    - branches: [node-3.0]
+      repo: ovirt-gerrit
+- names: [vdsm, jboss-as, ovirt-host-deploy]
+  releases:
+  - name: stable
+    repos:
+    - branches: [EL/6, Fedora/19, Fedora/20]
+      repo: resources/3.4.0-rc2/rpm
+    - branches: [ovirt-3.4]
+      repo: ovirt-gerrit
+repos:
+  ovirt-gerrit:
+    fetcher: git
+    options: {repo_base: 'git://gerrit.ovirt.org/'}
+    title: oVirt Gerrit
+  resources/3.4.0-rc2/rpm:
+    fetcher: repoquery
+    options: {repo_base: 'http://plain.resources.ovirt.org/releases/3.4.0-rc2/rpm/',
+      squash_dupes: true}
+    title: resources/3.4.0-rc2/rpm
+  resources/pub/ovirt-node-base-stable/iso:
+    fetcher: cnucnu
+    options: {url_base: 'http://plain.resources.ovirt.org/pub/ovirt-node-base-stable/iso/%(branch)s'}
+    title: Released ovirt-node ISOs on resources.ovirt.org
+  resources/pub/ovirt-node-base-stable/rpm:
+    fetcher: cnucnu
+    options: {url_base: 'http://plain.resources.ovirt.org/pub/ovirt-node-base-stable/rpm/%(branch)s/noarch/'}
+    title: Released ovirt-node on resources.ovirt.org (files)
+  resources/pub/ovirt-node-base-stable/rpm/repo:
+    fetcher: repoquery
+    options: {repo_base: 'http://plain.resources.ovirt.org/pub/ovirt-node-base-stable/rpm/'}
+    title: Released ovirt-node on resources.ovirt.org (repo)

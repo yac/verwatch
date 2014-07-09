@@ -1,0 +1,35 @@
+packages:
+- name: python-novaclient
+  releases:
+  - name: folsom
+    repos:
+    - branches: [stable/folsom]
+      repo: redhat-openstack
+    - branches: [f18-updates, dist-6E-epel]
+      repo: Fedora updates
+    - branches: [f18, dist-6E-epel]
+      repo: Fedora builds
+  - name: grizzly
+    repos:
+    - branches: [stable/grizzly]
+      repo: redhat-openstack
+    - branches: [fedora-18, fedora-19, epel-6]
+      repo: grizzly side repo
+    - branches: [f19]
+      repo: Fedora builds
+  - name: upstream
+    repos:
+    - branches: [master]
+      repo: openstack
+repos:
+  Fedora builds: {fetcher: koji}
+  Fedora updates: {fetcher: bodhi}
+  grizzly side repo:
+    fetcher: repoquery
+    options: {repo_base: 'http://repos.fedorapeople.org/repos/openstack/openstack-grizzly/'}
+  openstack:
+    fetcher: git
+    options: {repo_base: 'https://github.com/openstack/'}
+  redhat-openstack:
+    fetcher: git
+    options: {repo_base: 'https://github.com/redhat-openstack/'}

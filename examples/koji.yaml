@@ -1,0 +1,9 @@
+packages:
+- name: python-novaclient
+  releases:
+  - name: latest
+    repos:
+    - branches: [f17, f18, f19, dist-E6-epel]
+      repo: fedora packages
+repos:
+  fedora packages: {fetcher: koji}

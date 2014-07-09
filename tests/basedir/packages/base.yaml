@@ -1,0 +1,39 @@
+packages:
+- names: [foo, bar]
+  releases:
+  - name: release-banana
+    repos:
+    - branches: [v1, v2]
+      repo: ver
+    - branches: [v1, v2]
+      repo: next
+    - branches: [v1, v2]
+      repo: both
+    - branches: [v1, v2]
+      repo: err
+  - name: release-grape
+    repos:
+    - branches: [v1, v2]
+      repo: ver
+    - branches: [v1, v2]
+      repo: next
+    - branches: [v1, v2]
+      repo: both
+    - branches: [v1, v2]
+      repo: err
+repos:
+  both:
+    fetcher: debug
+    options: {next: '1.1', version: '1.0'}
+    tags: [important]
+    title: Constant Next Version
+  err: {fetcher: debug, title: Error Only}
+  next:
+    fetcher: debug
+    options: {next: '1.1'}
+    tags: [important]
+    title: Constant Next Version
+  ver:
+    fetcher: debug
+    options: {version: '1.0'}
+    title: Constant Version

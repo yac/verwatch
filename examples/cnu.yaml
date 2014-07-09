@@ -1,0 +1,12 @@
+packages:
+- name: ovirt-node
+  releases:
+  - name: stable
+    repos:
+    - branches: [el6]
+      repo: virt cnu
+repos:
+  virt cnu:
+    fetcher: cnucnu
+    options: {url_base: 'http://plain.resources.ovirt.org/pub/ovirt-node-base-stable/rpm/%(branch)s/noarch/'}
+    title: Released ovirt-node on resources.ovirt.org (files)
