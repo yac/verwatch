@@ -8,7 +8,7 @@ import yaml
 import blessings
 
 
-VERSION = '0.5'
+VERSION = '0.6'
 
 TERM = blessings.Terminal()
 TERM_PLAIN = util.PlainTerminal()
