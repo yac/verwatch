@@ -1,6 +1,6 @@
 import copy
 import os
-import json
+import yaml
 import glob
 import imp
 
@@ -25,16 +25,16 @@ class PathsManager(object):
     def get_package_conf_fn(self, conf=None):
         if not conf:
             conf = DEFAULT_PKGCONF
-        return "%s/%s.json" % (self.pkgconf_dir, conf)
+        return "%s/%s.yaml" % (self.pkgconf_dir, conf)
 
     def get_version_cache_fn(self, conf=None):
         if not conf:
             conf = DEFAULT_PKGCONF
-        return "%s/%s.json" % (self.version_cache_dir, conf)
+        return "%s/%s.yaml" % (self.version_cache_dir, conf)
 
 
 def get_package_conf(conf_fn):
-    pkg_conf = json.load(open(conf_fn))
+    pkg_conf = yaml.load(open(conf_fn))
     pkgs = pkg_conf['packages']
     # expand multiple packages
     for i, pkg in enumerate(pkgs):

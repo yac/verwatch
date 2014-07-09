@@ -4,7 +4,7 @@ import util
 import fetch
 
 import re
-import json
+import yaml
 import blessings
 
 
@@ -179,12 +179,12 @@ def update_versions(pkg_conf, paths, ver_cache_fn, vers=None,
     vers = fetch_versions(pkg_conf, paths, vers, show_commands=show_commands,
                           color=color)
     util.mkdir_file(ver_cache_fn)
-    json.dump(vers, open(ver_cache_fn, 'wb'))
+    yaml.dump(vers, open(ver_cache_fn, 'wb'))
     return vers
 
 
 def cached_versions(ver_cache_fn):
-    return json.load(open(ver_cache_fn, 'rb'))
+    return yaml.load(open(ver_cache_fn, 'rb'))
 
 
 def render_version(ver, max_ver=None, show_error=False, color=True):
