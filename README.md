@@ -44,6 +44,7 @@ Following `python` packages are required:
 
  * `blessings` for terminal colors
  * `docopt` for beautiful option parsing
+ * `PyYAML` for YAML parsing
 
 In case above list isn't up to date, [requirements.txt](requirements.txt)
 should be.
@@ -77,12 +78,14 @@ For library usage, see `shell.py`.
 QUICKSTART
 ----------
 
-    # your package manager or at least `pip` are better choices for installing
-    # python packages, but `easy_install` Just Works (TM)
-    sudo easy_install blessings docopt
+    # Tested on Fedora 21
+    sudo yum install python-pip python-virtualenv cnucnu
+    virtualenv verwatch-env --system-site-packages
+    source verwatch-env/bin/activate
     git clone https://github.com/yac/verwatch.git
     cd verwatch
-    sudo python setup.py install
+    pip install -r requirements.txt
+    python setup.py install
     mkdir -p ~/.verwatch/packages
     cp examples/nova.yaml ~/.verwatch/packages
     cd ~/.verwatch/packages
